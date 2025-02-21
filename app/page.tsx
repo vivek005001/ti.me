@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react'
 import TimeCapsuleCard from './components/TimeCapsuleCard'
 import { mockTimeCapsules } from './data/mockData'
 import { TimeCapsuleData } from './types'
+import { useUser, SignIn } from '@clerk/nextjs'
 
 interface FormData {
   description: string;
@@ -12,6 +13,7 @@ interface FormData {
 }
 
 const Page = () => {
+  const { isLoaded, isSignedIn, user } = useUser();
   const [formData, setFormData] = useState<FormData>({
     description: '',
     caption: '',
@@ -30,8 +32,8 @@ const Page = () => {
     try {
       const response = await fetch('/api/timeCapsules');
       const result = await response.json();
-      if (result.success) {
-        setTimeCapsules(result.data);
+      if (result.capsules) {
+        setTimeCapsules(result.capsules);
       }
     } catch (error) {
       console.error('Failed to fetch time capsules:', error);
@@ -113,9 +115,29 @@ const Page = () => {
     }
   };
 
+  if (!isLoaded) {
+    return <div>Loading...</div>;
+  }
+
+  if (!isSignedIn) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <h1 className="text-3xl font-bold mb-6">Welcome to TimeCapsuleConn</h1>
+          <p className="mb-8">Please sign in to continue</p>
+          <SignIn />
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-gray-900 text-white p-4">
       <div className="max-w-2xl mx-auto">
+        <div className="mb-8">
+          <h1 className="text-2xl font-bold">Welcome back!</h1>
+          <p className="text-gray-400">User ID: {user.id}</p>
+        </div>
         <div className="space-y-4 mb-8">
           <textarea
             name="description"

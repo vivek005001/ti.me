@@ -1,9 +1,15 @@
 import { NextResponse } from 'next/server';
 import clientPromise from '@/app/lib/mongodb';
 import { TimeCapsuleData } from '@/app/types';
+import { auth } from '@clerk/nextjs/server';
 
 export async function POST(request: Request) {
   try {
+    const { userId } = await auth();
+    if (!userId) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
     const client = await clientPromise;
     const db = client.db("timeCapsuleDB");
     
@@ -17,7 +23,14 @@ export async function POST(request: Request) {
       );
     }
 
-    const result = await db.collection("timeCapsules").insertOne(data);
+    // Add userId to the document
+    const capsuleWithUser = {
+      ...data,
+      userId,
+      createdAt: new Date().toISOString()
+    };
+
+    const result = await db.collection("timeCapsules").insertOne(capsuleWithUser);
     
     return NextResponse.json({ 
       success: true, 
@@ -34,18 +47,21 @@ export async function POST(request: Request) {
 
 export async function GET() {
   try {
+    const { userId } = await auth();
+    if (!userId) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
     const client = await clientPromise;
     const db = client.db("timeCapsuleDB");
     
-    const timeCapsules = await db.collection("timeCapsules")
-      .find({})
+    // Only fetch capsules for the current user
+    const capsules = await db.collection("timeCapsules")
+      .find({ userId })
       .sort({ createdAt: -1 })
       .toArray();
     
-    return NextResponse.json({ 
-      success: true, 
-      data: timeCapsules 
-    });
+    return NextResponse.json({ capsules });
   } catch (error) {
     console.error('Error fetching time capsules:', error);
     return NextResponse.json(
