@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import clientPromise from '@/app/lib/mongodb';
 import { TimeCapsuleData } from '@/app/types';
 import { auth } from '@clerk/nextjs/server';
+import { ObjectId } from 'mongodb';
 
 export async function POST(request: Request) {
   try {
@@ -27,6 +28,7 @@ export async function POST(request: Request) {
     const capsuleWithUser = {
       ...data,
       userId,
+      _id: new ObjectId(),
       createdAt: new Date().toISOString()
     };
 
@@ -54,18 +56,29 @@ export async function GET() {
 
     const client = await clientPromise;
     const db = client.db("timeCapsuleDB");
-    
-    // Only fetch capsules for the current user
+
+    // Get IDs of capsules shared with this user
+    const sharedCapsuleIds = (await db.collection("capsuleShares")
+      .find({ sharedWithUserId: userId })
+      .toArray())
+      .map(share => new ObjectId(share.capsuleId));
+
+    // Fetch both owned and shared capsules
     const capsules = await db.collection("timeCapsules")
-      .find({ userId })
+      .find({
+        $or: [
+          { userId },
+          { _id: { $in: sharedCapsuleIds } }
+        ]
+      })
       .sort({ createdAt: -1 })
       .toArray();
-    
+
     return NextResponse.json({ capsules });
   } catch (error) {
     console.error('Error fetching time capsules:', error);
     return NextResponse.json(
-      { success: false, error: 'Failed to fetch time capsules' },
+      { error: 'Failed to fetch time capsules' },
       { status: 500 }
     );
   }

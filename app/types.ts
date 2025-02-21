@@ -1,9 +1,10 @@
 export interface TimeCapsuleData {
-  id?: string;
-  description: string;
+  _id: string;
   caption: string;
-  fileData: string; // Base64 encoded file data
-  fileType: 'image' | 'video' | 'text';
+  description: string;
   endTime: string;
   createdAt: string;
+  fileType?: 'image' | 'video';
+  fileData?: string;
+  userId: string;
 } 
