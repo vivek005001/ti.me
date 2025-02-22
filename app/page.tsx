@@ -10,6 +10,7 @@ interface FormData {
   caption: string;
   file: File | null;
   endTime: string;
+  files: File[];
 }
 
 const Page = () => {
@@ -18,7 +19,8 @@ const Page = () => {
     description: '',
     caption: '',
     file: null,
-    endTime: ''
+    endTime: '',
+    files: []
   });
 
   const [timeCapsules, setTimeCapsules] = useState<TimeCapsuleData[]>([]);
@@ -51,10 +53,10 @@ const Page = () => {
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) {
+    if (e.target.files?.length) {
       setFormData(prev => ({
         ...prev,
-        file: e.target.files![0]
+        files: Array.from(e.target.files!)
       }));
     }
   };
@@ -66,27 +68,28 @@ const Page = () => {
         return;
       }
 
-      let fileData = '';
-      let fileType: 'image' | 'video' | 'text' = 'text';
+      const filesData = await Promise.all(
+        formData.files.map(async (file) => {
+          const fileData = await new Promise<string>((resolve, reject) => {
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = () => resolve(reader.result as string);
+            reader.onerror = error => reject(error);
+          });
 
-      if (formData.file) {
-        // Convert file to Base64
-        fileData = await new Promise((resolve, reject) => {
-          const reader = new FileReader();
-          reader.readAsDataURL(formData.file!);
-          reader.onload = () => resolve(reader.result as string);
-          reader.onerror = error => reject(error);
-        });
-
-        fileType = formData.file.type.startsWith('image') ? 'image' : 
-                   formData.file.type.startsWith('video') ? 'video' : 'text';
-      }
+          return {
+            fileType: file.type.startsWith('image') ? 'image' as const : 'video' as const,
+            fileData
+          };
+        })
+      );
 
       const newCapsule: TimeCapsuleData = {
+        _id: '',
+        userId: user?.id || '',
         description: formData.description,
         caption: formData.caption,
-        fileData,
-        fileType,
+        files: filesData,
         endTime: formData.endTime,
         createdAt: new Date().toISOString()
       };
@@ -107,7 +110,8 @@ const Page = () => {
           description: '',
           caption: '',
           file: null,
-          endTime: ''
+          endTime: '',
+          files: []
         });
       }
     } catch (error) {
@@ -161,8 +165,15 @@ const Page = () => {
             type="file"
             onChange={handleFileChange}
             className="w-full bg-gray-800 rounded p-3"
-            accept="image/*,video/*,text/*"
+            accept="image/*,video/*"
+            multiple
           />
+          
+          {formData.files.length > 0 && (
+            <p className="text-sm text-gray-400">
+              Selected files: {formData.files.length}
+            </p>
+          )}
           
           <input
             type="datetime-local"
@@ -188,7 +199,7 @@ const Page = () => {
           ) : (
             <div className="grid grid-cols-1 gap-4">
               {timeCapsules.map(capsule => (
-                <TimeCapsuleCard key={capsule.id} capsule={capsule} />
+                <TimeCapsuleCard key={capsule._id} capsule={capsule} />
               ))}
             </div>
           )}

@@ -4,8 +4,10 @@ export interface TimeCapsuleData {
   description: string;
   endTime: string;
   createdAt: string;
-  fileType?: 'image' | 'video';
-  fileData?: string;
+  files: {
+    fileType: 'image' | 'video';
+    fileData: string;
+  }[];
   userId: string;
 }
 

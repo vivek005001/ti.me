@@ -68,20 +68,27 @@ const TimeCapsuleCard: React.FC<TimeCapsuleCardProps> = ({ capsule }) => {
       
       <p className="text-gray-300 line-clamp-2">{capsule.description}</p>
       
-      {capsule.fileType === 'image' && capsule.fileData && (
-        <img 
-          src={capsule.fileData}
-          alt={capsule.caption}
-          className="w-full h-48 object-cover rounded"
-        />
-      )}
-      
-      {capsule.fileType === 'video' && capsule.fileData && (
-        <video 
-          src={capsule.fileData}
-          className="w-full h-48 object-cover rounded"
-          controls
-        />
+      {capsule.files?.[0] && (
+        <div className="relative">
+          {capsule.files[0].fileType === 'image' ? (
+            <img 
+              src={capsule.files[0].fileData}
+              alt={capsule.caption}
+              className="w-full h-48 object-cover rounded"
+            />
+          ) : (
+            <video 
+              src={capsule.files[0].fileData}
+              className="w-full h-48 object-cover rounded"
+              controls
+            />
+          )}
+          {capsule.files.length > 1 && (
+            <div className="absolute bottom-2 right-2 bg-black bg-opacity-70 px-2 py-1 rounded text-sm text-white">
+              +{capsule.files.length - 1} more
+            </div>
+          )}
+        </div>
       )}
       
       <div className="text-sm text-gray-400">
@@ -92,7 +99,7 @@ const TimeCapsuleCard: React.FC<TimeCapsuleCardProps> = ({ capsule }) => {
         isOpen={isShareModalOpen}
         onClose={() => setIsShareModalOpen(false)}
         onShareById={handleShare}
-        onShareByLink={handleShare}
+        onShareByLink={() => Promise.resolve(capsule._id)}
       />
     </div>
   );
