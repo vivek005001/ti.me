@@ -5,7 +5,7 @@ declare global {
 }
 
 'use client';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 
 interface LocationInputProps {
   value: string;
@@ -14,38 +14,36 @@ interface LocationInputProps {
 
 export default function LocationInput({ value, onChange }: LocationInputProps) {
   const inputRef = useRef<HTMLInputElement>(null);
-  const [internalValue, setInternalValue] = useState(value);
 
   useEffect(() => {
     if (!window.google || !inputRef.current) return;
 
-    const autocomplete = new google.maps.places.Autocomplete(inputRef.current);
-    
+    const autocomplete = new google.maps.places.Autocomplete(inputRef.current, {
+      fields: ['formatted_address'],
+      types: ['geocode']
+    });
+
     const listener = autocomplete.addListener('place_changed', () => {
       const place = autocomplete.getPlace();
       if (place.formatted_address) {
-        setInternalValue(place.formatted_address);
         onChange(place.formatted_address);
       }
     });
 
     return () => {
-      google.maps.event.removeListener(listener);
+      if (google && google.maps && listener) {
+        google.maps.event.removeListener(listener);
+      }
     };
-  }, []); // Empty dependency array
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setInternalValue(e.target.value);
-    onChange(e.target.value);
-  };
+  }, [onChange]);
 
   return (
     <div className="relative">
       <input
         ref={inputRef}
         type="text"
-        value={internalValue}
-        onChange={handleInputChange}
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
         placeholder="Add location"
         className="w-full bg-gray-800 rounded p-3 pl-10"
       />
