@@ -11,6 +11,7 @@ interface Group {
   createdBy: string;
   members: string[];
   createdAt: string;
+  isPrivate: boolean;
 }
 
 export default function GroupsPage() {
@@ -36,7 +37,7 @@ export default function GroupsPage() {
     }
   }, [user]);
 
-  const handleCreateGroup = async (groupData: { name: string; description: string }) => {
+  const handleCreateGroup = async (groupData: { name: string; description: string; isPrivate: boolean }) => {
     try {
       const response = await fetch('/api/groups', {
         method: 'POST',

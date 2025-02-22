@@ -10,7 +10,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    const { name, description } = await request.json();
+    const { name, description, isPrivate } = await request.json();
     
     if (!name || !description) {
       return NextResponse.json(
@@ -28,7 +28,8 @@ export async function POST(request: Request) {
       description,
       createdBy: userId,
       members: [userId],
-      createdAt: new Date().toISOString()
+      createdAt: new Date().toISOString(),
+      isPrivate: isPrivate || false,
     };
 
     await db.collection("groups").insertOne(group);
@@ -55,9 +56,15 @@ export async function GET() {
 
     const client = await clientPromise;
     const db = client.db("timeCapsuleDB");
-    
+
+    // Fetch groups that are either public or belong to the user
     const groups = await db.collection("groups")
-      .find({ members: userId })
+      .find({
+        $or: [
+          { isPrivate: false }, // Public groups
+          { members: userId }   // Groups the user is a member of
+        ]
+      })
       .sort({ createdAt: -1 })
       .toArray();
 

@@ -3,20 +3,22 @@ import { useState } from 'react';
 interface CreateGroupModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onCreate: (data: { name: string; description: string }) => Promise<void>;
+  onCreate: (data: { name: string; description: string; isPrivate: boolean }) => Promise<void>;
 }
 
 const CreateGroupModal: React.FC<CreateGroupModalProps> = ({ isOpen, onClose, onCreate }) => {
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
+  const [isPrivate, setIsPrivate] = useState(false);
 
   if (!isOpen) return null;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    await onCreate({ name, description });
+    await onCreate({ name, description, isPrivate });
     setName('');
     setDescription('');
+    setIsPrivate(false);
   };
 
   return (
@@ -39,6 +41,17 @@ const CreateGroupModal: React.FC<CreateGroupModalProps> = ({ isOpen, onClose, on
             className="w-full p-2 mb-4 bg-gray-700 rounded h-24"
             required
           />
+          <div className="flex items-center mb-4">
+            <input
+              type="checkbox"
+              checked={isPrivate}
+              onChange={() => setIsPrivate(!isPrivate)}
+              className="mr-2"
+            />
+            <label className="text-gray-300">
+              Set as Private Group
+            </label>
+          </div>
           <div className="flex justify-end gap-2">
             <button
               type="button"

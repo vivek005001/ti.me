@@ -91,7 +91,8 @@ const TimeCapsuleCard: React.FC<TimeCapsuleCardProps> = ({ capsule }) => {
       <ShareModal
         isOpen={isShareModalOpen}
         onClose={() => setIsShareModalOpen(false)}
-        onShare={handleShare}
+        onShareById={handleShare}
+        onShareByLink={handleShare}
       />
     </div>
   );
