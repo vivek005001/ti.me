@@ -1,5 +1,5 @@
 'use client';
-import { useState, FormEvent } from 'react';
+import { useState, FormEvent, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 
 interface TimeCapsuleFormProps {
@@ -10,9 +10,18 @@ export default function TimeCapsuleForm({ groupId }: TimeCapsuleFormProps) {
   const router = useRouter();
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
+
   const [files, setFiles] = useState<File[]>([]);
   const [unlockDate, setUnlockDate] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+
+
+
+
+ 
+
+
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
@@ -31,7 +40,6 @@ export default function TimeCapsuleForm({ groupId }: TimeCapsuleFormProps) {
       formData.append('groupId', groupId);
       formData.append('unlockDate', unlockDate);
 
-      // Append each file individually
       files.forEach((file) => {
         formData.append('files', file);
       });
@@ -46,7 +54,6 @@ export default function TimeCapsuleForm({ groupId }: TimeCapsuleFormProps) {
       }
 
       router.refresh();
-      // Reset form
       setTitle('');
       setDescription('');
       setFiles([]);
@@ -111,6 +118,8 @@ export default function TimeCapsuleForm({ groupId }: TimeCapsuleFormProps) {
           </div>
         )}
       </div>
+
+     
 
       <div>
         <label htmlFor="unlockDate" className="block text-sm font-medium text-gray-300">

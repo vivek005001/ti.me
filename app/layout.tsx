@@ -1,15 +1,9 @@
 import type React from "react"
 import type { Metadata } from "next"
 import "./globals.css"
-
-import {
-  ClerkProvider,
-  SignInButton,
-  SignedIn,
-  SignedOut,
-  UserButton
-} from '@clerk/nextjs'
+import { ClerkProvider, SignedIn } from '@clerk/nextjs'
 import Sidebar from './components/Sidebar'
+import NavBar from './components/NavBar'
 
 export const metadata: Metadata = {
   title: "TimeCapsuleConn",
@@ -25,15 +19,11 @@ export default function RootLayout({
   return (
     <ClerkProvider>
       <html lang="en">
+        <head>
+          <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+        </head>
         <body className="bg-[#161616] text-white">
-          <nav className="p-4 flex justify-end">
-            <SignedIn>
-              <UserButton afterSignOutUrl="/"/>
-            </SignedIn>
-            <SignedOut>
-              <SignInButton mode="modal"/>
-            </SignedOut>
-          </nav>
+          <NavBar />
           <SignedIn>
             <Sidebar />
           </SignedIn>

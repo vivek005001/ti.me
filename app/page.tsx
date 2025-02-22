@@ -11,6 +11,7 @@ interface FormData {
   file: File | null;
   endTime: string;
   files: File[];
+
 }
 
 const Page = () => {
@@ -20,7 +21,8 @@ const Page = () => {
     caption: '',
     file: null,
     endTime: '',
-    files: []
+    files: [],
+
   });
 
   const [timeCapsules, setTimeCapsules] = useState<TimeCapsuleData[]>([]);
@@ -111,7 +113,7 @@ const Page = () => {
           caption: '',
           file: null,
           endTime: '',
-          files: []
+          files: [],
         });
       }
     } catch (error) {
@@ -140,7 +142,7 @@ const Page = () => {
       <div className="max-w-2xl mx-auto">
         <div className="mb-8">
           <h1 className="text-2xl font-bold">Welcome back!</h1>
-          <p className="text-gray-400">User ID: {user.id}</p>
+       
         </div>
         <div className="space-y-4 mb-8">
           <textarea
@@ -174,7 +176,7 @@ const Page = () => {
               Selected files: {formData.files.length}
             </p>
           )}
-          
+
           <input
             type="datetime-local"
             name="endTime"

@@ -9,6 +9,7 @@ export interface TimeCapsuleData {
     fileData: string;
   }[];
   userId: string;
+
 }
 
 export interface Group {
