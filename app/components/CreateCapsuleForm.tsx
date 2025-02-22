@@ -20,7 +20,7 @@ const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 <input
   type="text"
   name="location"
-  placeholder="Add location"
+  placeholder="Add your location"
   className="bg-gray-700 text-white rounded p-2"
   value={formData.location}
   onChange={handleChange}
