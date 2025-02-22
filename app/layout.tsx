@@ -9,6 +9,7 @@ import {
   SignedOut,
   UserButton
 } from '@clerk/nextjs'
+import Sidebar from './components/Sidebar'
 
 export const metadata: Metadata = {
   title: "TimeCapsuleConn",
@@ -33,13 +34,16 @@ export default function RootLayout({
               <SignInButton mode="modal"/>
             </SignedOut>
           </nav>
-          {children}
+          <SignedIn>
+            <Sidebar />
+          </SignedIn>
+          <main className="ml-64">
+            {children}
+          </main>
         </body>
       </html>
     </ClerkProvider>
   )
 }
-
-
 
 import './globals.css'
