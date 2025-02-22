@@ -29,11 +29,11 @@ export default function CapsulePage({ params }: { params: { id: string } }) {
   }, [params.id]);
 
   if (isLoading || !isLoaded) {
-    return <div className="min-h-screen bg-gray-900 text-white p-8">Loading...</div>;
+    return <div className="min-h-screen bg-zinc-900 text-white p-8">Loading...</div>;
   }
 
   if (!capsule) {
-    return <div className="min-h-screen bg-gray-900 text-white p-8">Capsule not found</div>;
+    return <div className="min-h-screen bg-zinc-900 text-white p-8">Capsule not found</div>;
   }
 
   const isUnlocked = new Date(capsule.endTime) <= new Date();
@@ -48,7 +48,7 @@ export default function CapsulePage({ params }: { params: { id: string } }) {
   };
 
   return (
-    <div className="min-h-screen bg-gray-900 text-white p-8">
+    <div className="min-h-screen bg-zinc-900 text-white p-8">
       <div className="max-w-6xl mx-auto">
         <button 
           onClick={() => router.back()} 

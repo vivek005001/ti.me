@@ -5,7 +5,7 @@ declare global {
 }
 
 'use client';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 interface LocationInputProps {
   value: string;
@@ -13,6 +13,7 @@ interface LocationInputProps {
 }
 
 export default function LocationInput({ value, onChange }: LocationInputProps) {
+  const [isOpen, setIsOpen] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -27,6 +28,7 @@ export default function LocationInput({ value, onChange }: LocationInputProps) {
       const place = autocomplete.getPlace();
       if (place.formatted_address) {
         onChange(place.formatted_address);
+        setIsOpen(false);
       }
     });
 
@@ -38,18 +40,26 @@ export default function LocationInput({ value, onChange }: LocationInputProps) {
   }, [onChange]);
 
   return (
-    <div className="relative">
-      <input
-        ref={inputRef}
-        type="text"
-        value={value}
-        onChange={(e) => onChange(e.target.value)}
-        placeholder="Add location"
-        className="w-full bg-gray-800 rounded p-3 pl-10"
-      />
-      <span className="absolute left-3 top-1/2 transform -translate-y-1/2">
-        <span className="material-icons text-gray-400">location_on</span>
-      </span>
+    <div className="inline-flex items-center">
+      <button
+        onClick={() => setIsOpen(!isOpen)}
+        className="cursor-pointer p-3 hover:bg-zinc-800 rounded-xl"
+      >
+        <span className="material-icons text-white">location_on</span>
+      </button>
+      
+      {isOpen && (
+        <div className="absolute mt-2 ml-12 w-64 z-50">
+          <input
+            ref={inputRef}
+            type="text"
+            value={value}
+            onChange={(e) => onChange(e.target.value)}
+            placeholder="Add location"
+            className="w-full bg-black p-3 rounded-xl text-white"
+          />
+        </div>
+      )}
     </div>
   );
 } 

@@ -6,12 +6,12 @@ const Sidebar = () => {
   const pathname = usePathname();
 
   return (
-    <div className="w-64 bg-gray-900 h-screen fixed left-0 top-0 p-4">
-      <div className="space-y-4 mt-16">
+    <div className="fixed top-24 left-0 w-64 bg-zinc-900 h-[calc(100vh-5rem)] rounded-r-xl">
+      <div className="space-y-4 p-4">
         <Link 
           href="/"
           className={`block p-3 rounded-lg ${
-            pathname === '/' ? 'bg-blue-600' : 'hover:bg-gray-800'
+            pathname === '/' ? 'bg-black' : 'hover:bg-zinc-800'
           }`}
         >
           <div className="flex items-center space-x-3">
@@ -23,7 +23,7 @@ const Sidebar = () => {
         <Link 
           href="/groups"
           className={`block p-3 rounded-lg ${
-            pathname.startsWith('/groups') ? 'bg-blue-600' : 'hover:bg-gray-800'
+            pathname.startsWith('/groups') ? 'bg-black' : 'hover:bg-zinc-800'
           }`}
         >
           <div className="flex items-center space-x-3">

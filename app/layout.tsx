@@ -27,7 +27,7 @@ export default function RootLayout({
             defer
           />
         </head>
-        <body className="bg-[#161616] text-white">
+        <body className="bg-black text-white">
           <NavBar />
           <SignedIn>
             <Sidebar />
