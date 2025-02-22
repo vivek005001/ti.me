@@ -1,9 +1,9 @@
 'use client'
 import React, { useState, useEffect } from 'react'
 import TimeCapsuleCard from './components/TimeCapsuleCard'
-import { mockTimeCapsules } from './data/mockData'
 import { TimeCapsuleData } from './types'
 import { useUser, SignIn } from '@clerk/nextjs'
+import LocationInput from './components/LocationInput'
 
 interface FormData {
   description: string;
@@ -11,7 +11,7 @@ interface FormData {
   file: File | null;
   endTime: string;
   files: File[];
-
+  location: string;
 }
 
 const Page = () => {
@@ -22,7 +22,7 @@ const Page = () => {
     file: null,
     endTime: '',
     files: [],
-
+    location: '',
   });
 
   const [timeCapsules, setTimeCapsules] = useState<TimeCapsuleData[]>([]);
@@ -93,6 +93,7 @@ const Page = () => {
         caption: formData.caption,
         files: filesData,
         endTime: formData.endTime,
+        location: formData.location,
         createdAt: new Date().toISOString()
       };
 
@@ -114,6 +115,7 @@ const Page = () => {
           file: null,
           endTime: '',
           files: [],
+          location: '',
         });
       }
     } catch (error) {
@@ -183,6 +185,11 @@ const Page = () => {
             value={formData.endTime}
             onChange={handleInputChange}
             className="w-full bg-gray-800 rounded p-3"
+          />
+          
+          <LocationInput
+            value={formData.location}
+            onChange={(value) => setFormData(prev => ({ ...prev, location: value }))}
           />
           
           <button

@@ -135,8 +135,13 @@ const TimeCapsuleCard: React.FC<TimeCapsuleCardProps> = ({ capsule }) => {
       <div className="space-y-4">
         <h3 className="text-lg font-semibold text-white">{capsule.caption}</h3>
         <p className="text-gray-300">{capsule.description}</p>
-
-  
+        
+        {capsule.location && (
+          <div className="flex items-center gap-2 text-gray-300">
+            <span className="material-icons text-sm">location_on</span>
+            <span>{capsule.location}</span>
+          </div>
+        )}
 
         <div className="flex justify-between text-sm text-gray-400">
           <span>{formatDate(capsule.createdAt)}</span>
@@ -204,7 +209,12 @@ const TimeCapsuleCard: React.FC<TimeCapsuleCardProps> = ({ capsule }) => {
                     <span>{user?.fullName || 'Anonymous'}</span>
                   </div>
 
-                
+                  {capsule.location && (
+                    <div className="flex items-center gap-2 text-gray-300">
+                      <span className="material-icons text-sm">location_on</span>
+                      <span>{capsule.location}</span>
+                    </div>
+                  )}
 
                   <div className="flex items-center gap-2 text-gray-300">
                     <span className="material-icons text-sm">schedule</span>

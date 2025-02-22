@@ -21,6 +21,11 @@ export default function RootLayout({
       <html lang="en">
         <head>
           <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+          <script
+            src={`https://maps.googleapis.com/maps/api/js?key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}&libraries=places`}
+            async
+            defer
+          />
         </head>
         <body className="bg-[#161616] text-white">
           <NavBar />

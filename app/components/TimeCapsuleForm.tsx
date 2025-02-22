@@ -10,23 +10,19 @@ export default function TimeCapsuleForm({ groupId }: TimeCapsuleFormProps) {
   const router = useRouter();
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
-
   const [files, setFiles] = useState<File[]>([]);
   const [unlockDate, setUnlockDate] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
-
-
-
-
-
- 
-
-
+  const [location, setLocation] = useState('');
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
       setFiles(Array.from(e.target.files));
     }
+  };
+
+  const handleLocationSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setLocation(e.target.value);
   };
 
   const handleSubmit = async (e: FormEvent) => {
@@ -39,6 +35,7 @@ export default function TimeCapsuleForm({ groupId }: TimeCapsuleFormProps) {
       formData.append('description', description);
       formData.append('groupId', groupId);
       formData.append('unlockDate', unlockDate);
+      formData.append('location', location);
 
       files.forEach((file) => {
         formData.append('files', file);
@@ -58,6 +55,7 @@ export default function TimeCapsuleForm({ groupId }: TimeCapsuleFormProps) {
       setDescription('');
       setFiles([]);
       setUnlockDate('');
+      setLocation('');
     } catch (error) {
       console.error('Error creating time capsule:', error);
     } finally {
@@ -119,7 +117,19 @@ export default function TimeCapsuleForm({ groupId }: TimeCapsuleFormProps) {
         )}
       </div>
 
-     
+      <div>
+        <label htmlFor="location" className="block text-sm font-medium text-gray-300">
+          Location
+        </label>
+        <input
+          type="text"
+          id="location"
+          value={location}
+          onChange={handleLocationSelect}
+          placeholder="Enter location"
+          className="mt-1 block w-full rounded-md border-gray-600 bg-gray-700 text-white shadow-sm focus:border-blue-500 focus:ring-blue-500"
+        />
+      </div>
 
       <div>
         <label htmlFor="unlockDate" className="block text-sm font-medium text-gray-300">
