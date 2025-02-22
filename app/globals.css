@@ -42,3 +42,49 @@
   }
 }
 
+.events-panel {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  background-color: rgb(39, 39, 42); /* zinc-800 */
+  border-radius: 1.5rem;
+  padding: 1.5rem;
+  width: 20rem;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  z-index: 50;
+}
+
+.event-icon {
+  background-color: #000000;
+  padding: 0.75rem;
+  border-radius: 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.event-icon svg {
+  width: 1.5rem;
+  height: 1.5rem;
+  color: white;
+}
+
+.event-text h3 {
+  color: white;
+  font-weight: 500;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+}
+
+.event-text p {
+  color: rgb(161, 161, 170); /* zinc-400 */
+  font-size: 0.75rem;
+  line-height: 1rem;
+}
+
+.event-divider {
+  height: 1px;
+  background-color: rgb(63, 63, 70); /* zinc-700 */
+  margin: 1rem 0;
+}
+
