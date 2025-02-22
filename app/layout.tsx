@@ -1,9 +1,15 @@
 import type React from "react"
 import type { Metadata } from "next"
 import "./globals.css"
-import { ClerkProvider, SignedIn } from '@clerk/nextjs'
+
+import {
+  ClerkProvider,
+  SignInButton,
+  SignedIn,
+  SignedOut,
+  UserButton
+} from '@clerk/nextjs'
 import Sidebar from './components/Sidebar'
-import NavBar from './components/NavBar'
 
 export const metadata: Metadata = {
   title: "TimeCapsuleConn",
@@ -17,18 +23,23 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <ClerkProvider>
+    <ClerkProvider
+      appearance={{
+        baseTheme: undefined
+      }}
+      afterSignInUrl="/dashboard"
+      afterSignUpUrl="/dashboard"
+    >
       <html lang="en">
-        <head>
-          <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
-          <script
-            src={`https://maps.googleapis.com/maps/api/js?key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}&libraries=places`}
-            async
-            defer
-          />
-        </head>
         <body className="bg-[#161616] text-white">
-          <NavBar />
+          <nav className="p-4 flex justify-end">
+            <SignedIn>
+              <UserButton afterSignOutUrl="/"/>
+            </SignedIn>
+            <SignedOut>
+              <SignInButton mode="modal"/>
+            </SignedOut>
+          </nav>
           <SignedIn>
             <Sidebar />
           </SignedIn>
