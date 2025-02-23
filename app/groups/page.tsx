@@ -15,8 +15,10 @@ interface Group {
   description: string;
   isPrivate: boolean;
   createdBy: string;
+  ownerId: string;
   members: string[];
   createdAt: string;
+  updatedAt: string;
 }
 
 export default function GroupsPage() {
@@ -68,7 +70,7 @@ export default function GroupsPage() {
   const publicGroups = groups.filter(group => !group.isPrivate && !myGroups.includes(group));
 
   return (
-    <div className="min-h-screen p-4 mt-24">
+    <div className="min-h-screen p-4 mt-28">
       {isLoading ? (
         <div className="flex justify-center items-center h-[calc(100vh-8rem)]">
           <Lottie
@@ -84,17 +86,9 @@ export default function GroupsPage() {
         </div>
       ) : (
         <div className="max-w-7xl mx-auto space-y-8">
-          <div className="flex justify-between items-center">
-            <h1 className="text-4xl font-bold bg-gradient-to-r from-purple-200 via-blue-200 to-white bg-clip-text text-transparent">
-              Groups
-            </h1>
-            <button
-              onClick={() => setIsCreateModalOpen(true)}
-              className="bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-lg transition-colors duration-200"
-            >
-              Create Group
-            </button>
-          </div>
+          <h1 className="text-4xl font-bold bg-gradient-to-r from-purple-200 via-blue-200 to-white bg-clip-text text-transparent">
+            Groups
+          </h1>
 
           <motion.div
             initial={{ y: 20, opacity: 0 }}
@@ -130,6 +124,17 @@ export default function GroupsPage() {
               )}
             </div>
           </motion.div>
+
+          {/* Sticky Create Group Button */}
+          <motion.button
+            initial={{ scale: 0 }}
+            animate={{ scale: 1 }}
+            transition={{ type: "spring", stiffness: 260, damping: 20 }}
+            onClick={() => setIsCreateModalOpen(true)}
+            className="fixed bottom-8 right-8 bg-gradient-to-r from-purple-500 to-purple-600 hover:from-purple-600 hover:to-purple-700 text-white font-medium w-16 h-16 rounded-full flex items-center justify-center shadow-lg transition-all duration-200 z-50 hover:shadow-purple-500/25 hover:shadow-xl"
+          >
+            <span className="material-icons text-3xl">add</span>
+          </motion.button>
 
           <CreateGroupModal
             isOpen={isCreateModalOpen}
