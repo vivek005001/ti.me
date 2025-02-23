@@ -8,13 +8,13 @@ import { usePathname } from 'next/navigation'
 import { motion } from 'framer-motion'
 import BackgroundBlobs from './components/BackgroundBlobs'
 import { useState } from 'react'
-import { Inter } from 'next/font/google'
+import { Montserrat } from 'next/font/google'
 
-const inter = Inter({
+const montserrat = Montserrat({
+  weight: ['300', '400', '500', '600', '700'],
   subsets: ['latin'],
   display: 'swap',
-  variable: '--font-inter',
-  weight: ['300', '400', '500', '600'],  // Including light, regular, medium, and semibold weights
+  variable: '--font-montserrat',
 })
 
 export default function RootLayout({
@@ -27,7 +27,7 @@ export default function RootLayout({
 
   return (
     <ClerkProvider>
-      <html lang="en" className={`${inter.variable}`}>
+      <html lang="en" className={`${montserrat.variable}`}>
         <head>
           <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
           <script
@@ -36,7 +36,7 @@ export default function RootLayout({
             defer
           />
         </head>
-        <body className="bg-black text-white relative overflow-x-hidden font-inter">
+        <body className="bg-black text-white relative overflow-x-hidden font-montserrat">
           <BackgroundBlobs />
           {/* Conditionally render NavBar and Sidebar with animations */}
           {pathname !== '/' && (

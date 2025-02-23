@@ -12,6 +12,7 @@ const TimeCapsuleCard: React.FC<TimeCapsuleCardProps> = ({ capsule }) => {
   const router = useRouter();
   const [isShareModalOpen, setIsShareModalOpen] = useState(false);
   const [creatorImageUrl, setCreatorImageUrl] = useState<string>('');
+  const [isImageLoading, setIsImageLoading] = useState(true);
   const { user } = useUser();
   const isOwner = user?.id === capsule.userId;
   const isUnlocked = new Date(capsule.endTime) <= new Date();
@@ -99,11 +100,18 @@ const TimeCapsuleCard: React.FC<TimeCapsuleCardProps> = ({ capsule }) => {
     <div className="glass rounded-lg p-4 py-6 mb-2 space-y-3">
       <div className="flex justify-between items-start">
         <div className="flex items-center gap-2">
-          <img 
-            src={creatorImageUrl} 
-            alt="Creator avatar"
-            className="w-6 h-6 rounded-md"
-          />
+          <div className="w-6 h-6 rounded-md relative">
+            {isImageLoading && (
+              <div className="absolute inset-0 bg-white/10 animate-pulse rounded-md" />
+            )}
+            <img 
+              src={creatorImageUrl} 
+              alt="Creator avatar"
+              className="w-full h-full rounded-md"
+              onLoad={() => setIsImageLoading(false)}
+              style={{ opacity: isImageLoading ? 0 : 1 }}
+            />
+          </div>
           <h3 className="text-xl font-semibold text-white">{capsule.caption}</h3>
         </div>
         <div className="flex gap-2 items-center">

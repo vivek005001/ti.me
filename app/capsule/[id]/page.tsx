@@ -3,6 +3,8 @@ import { useEffect, useState, useRef } from 'react';
 import { TimeCapsuleData } from '@/app/types';
 import { useUser } from '@clerk/nextjs';
 import { useRouter } from 'next/navigation';
+import Lottie from 'react-lottie-player';
+import loadingAnimation from '@/public/animations/loading.json';
 
 export default function CapsulePage({ params }: { params: { id: string } }) {
   const [capsule, setCapsule] = useState<TimeCapsuleData | null>(null);
@@ -51,7 +53,20 @@ export default function CapsulePage({ params }: { params: { id: string } }) {
   };
 
   if (isLoading || !isLoaded) {
-    return <div className="min-h-screen bg-black text-white p-8">Loading...</div>;
+    return (
+      <div className="min-h-screen flex justify-center items-center">
+        <Lottie
+          loop
+          animationData={loadingAnimation}
+          play
+          style={{ 
+            width: 150, 
+            height: 150,
+            filter: 'invert(40%) sepia(45%) saturate(600%) hue-rotate(240deg) brightness(90%) contrast(85%)'
+          }}
+        />
+      </div>
+    );
   }
 
   if (!capsule) {
@@ -82,20 +97,27 @@ export default function CapsulePage({ params }: { params: { id: string } }) {
 
         {/* Audio Player */}
         {isUnlocked && capsule.audioFile && (
-          <div className="mb-8 glass p-4 rounded-xl">
-            <button 
-              onClick={handlePlayPause} 
-              className="flex items-center text-gray-400 hover:text-white transition-colors"
-            >
-              <span className="material-icons mr-2">
-                {isPlaying ? 'pause' : 'play_arrow'}
-              </span>
-              {isPlaying ? 'Pause Audio' : 'Play Audio'}
-            </button>
+          <div className="mb-8 glass p-6 rounded-xl">
             <audio 
               ref={audioRef} 
+              controls
               preload="metadata"
-              className="w-full mt-4"
+              className="w-full 
+                [&::-webkit-media-controls-panel]:glass
+                [&::-webkit-media-controls-play-button]:text-yellow-500
+                [&::-webkit-media-controls-seek-forward-button]:text-yellow-500
+                [&::-webkit-media-controls-timeline]:text-yellow-500
+                [&::-webkit-media-controls-current-time-display]:text-yellow-500
+                [&::-webkit-media-controls-time-remaining-display]:text-yellow-500
+                [&::-webkit-media-controls-timeline]:hover:text-yellow-400
+                [&::-webkit-media-controls-volume-slider]:text-yellow-500
+                [&::-webkit-media-controls-mute-button]:text-yellow-500
+                [&::-webkit-media-controls-enclosure]:border-none
+                [&::-webkit-media-controls-enclosure]:shadow-none
+                [&::-webkit-media-controls-timeline-container]:!bg-yellow-500
+                [&::-webkit-slider-runnable-track]:!bg-yellow-500
+                [&::-webkit-slider-thumb]:bg-red-600
+                [color-scheme:dark]"
             >
               <source src={capsule.audioFile.fileData} type="audio/webm;codecs=opus" />
               Your browser does not support the audio element.
@@ -107,9 +129,19 @@ export default function CapsulePage({ params }: { params: { id: string } }) {
           {/* Media Gallery */}
           <div className="glass rounded-xl p-6 space-y-4">
             {isUnlocked ? (
-              <div className="grid grid-cols-2 gap-4">
+              <div className={`grid ${
+                capsule.files.length === 1 ? 'grid-cols-1' : 
+                capsule.files.length === 2 ? 'grid-cols-2' :
+                capsule.files.length === 3 ? 'grid-cols-2' :
+                'grid-cols-2 md:grid-cols-3'
+              } gap-4`}>
                 {capsule.files.map((file, index) => (
-                  <div key={index} className="aspect-square bg-white/5 rounded-xl overflow-hidden hover:scale-105 transition-transform duration-300">
+                  <div 
+                    key={index} 
+                    className={`aspect-square bg-white/5 rounded-xl overflow-hidden hover:scale-105 transition-transform duration-300 ${
+                      capsule.files.length === 3 && index === 0 ? 'col-span-2' : ''
+                    }`}
+                  >
                     {file.fileType === 'image' ? (
                       <img 
                         src={file.fileData}

@@ -83,3 +83,29 @@ textarea {
   scrollbar-color: rgba(75, 85, 99, 0.3) transparent;
 }
 
+
+audio::-webkit-media-controls-progress-bar {
+  --progress-bar-color: #facc15; /* Yellow-500 */
+}
+audio::-webkit-slider-runnable-track {
+  appearance: none; /* Disable native styling */
+  background-color: #facc15 !important; /* Yellow-500 */
+  height: 6px;
+  border-radius: 6px;
+}
+
+audio::-webkit-slider-thumb {
+  background-color: #dc2626; /* Red-600 */
+  border-radius: 50%;
+  width: 14px;
+  height: 14px;
+  appearance: none;
+  cursor: pointer;
+}
+audio::-moz-progress-bar {
+  background-color: #facc15;
+}
+
+audio::-ms-fill {
+  background-color: #facc15;
+}

@@ -31,7 +31,7 @@ const NavBar = () => {
               className="w-full h-full object-cover mix-blend-screen"
             />
           </div>
-          <span className="text-2xl font-bold text-white">Time It</span>
+          <span className="text-2xl font-bold text-white">TimeIt</span>
         </Link>
       </div>
       

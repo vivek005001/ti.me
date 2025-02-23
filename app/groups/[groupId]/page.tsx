@@ -99,7 +99,7 @@ const GroupDetailsPage = () => {
   };
 
   return (
-    <div className="min-h-screen text-white p-4 mt-16 rounded-xl">
+    <div className="min-h-screen text-white p-4 mt-20 rounded-xl">
       <div className="mx-auto p-4">
         {group && (
           <motion.div 
