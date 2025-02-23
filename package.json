@@ -49,6 +49,7 @@
     "framer-motion": "^12.4.7",
     "input-otp": "1.4.1",
     "lottie-react": "^2.4.1",
+    "lottie-web": "^5.12.2",
     "lucide-react": "^0.454.0",
     "mongoose": "^8.10.1",
     "next": "14.2.16",

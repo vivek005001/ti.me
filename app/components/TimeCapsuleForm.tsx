@@ -2,6 +2,7 @@
 import React, { useState, useRef } from 'react';
 import LocationInput from './LocationInput';
 import { useUser } from '@clerk/nextjs';
+import AudioRecordingModal from './AudioRecordingModal';
 
 interface FormData {
   description: string;
@@ -10,6 +11,7 @@ interface FormData {
   endTime: string;
   files: File[];
   location: string;
+  audioBlob?: Blob;
 }
 
 interface TimeCapsuleFormProps {
@@ -31,6 +33,13 @@ export default function TimeCapsuleForm({ onSubmit }: TimeCapsuleFormProps) {
   const [isLoading, setIsLoading] = useState(false);
   const [isGenerating, setIsGenerating] = useState(false);
   const [isGeneratingDesc, setIsGeneratingDesc] = useState(false);
+  const [showRecordingModal, setShowRecordingModal] = useState(false);
+  const [isRecording, setIsRecording] = useState(false);
+  const mediaRecorderRef = useRef<MediaRecorder | null>(null);
+  const audioChunksRef = useRef<Blob[]>([]);
+  const [audioURL, setAudioURL] = useState<string | null>(null);
+  const [selectedDate, setSelectedDate] = useState('');
+  const [selectedTime, setSelectedTime] = useState('');
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -52,11 +61,13 @@ export default function TimeCapsuleForm({ onSubmit }: TimeCapsuleFormProps) {
   const handleSubmit = async () => {
     try {
       setIsLoading(true);
-      if (!formData.description || !formData.caption || !formData.endTime || formData.files.length === 0) {
-        alert('Please fill in all required fields and upload at least one file');
+      if (!formData.description || !formData.caption || !formData.endTime || 
+          (formData.files.length === 0 && !formData.audioBlob)) {
+        alert('Please fill in all required fields and upload at least one file or record audio');
         return;
       }
 
+      // Handle image/video files
       const filesData = await Promise.all(
         formData.files.map(async (file) => {
           const fileData = await new Promise<string>((resolve, reject) => {
@@ -67,21 +78,38 @@ export default function TimeCapsuleForm({ onSubmit }: TimeCapsuleFormProps) {
           });
 
           return {
-            fileType: file.type.startsWith('image') ? 'image' as const : 'video' as const,
+            fileType: file.type.startsWith('image') ? 'image' : 'video',
             fileData
           };
         })
       );
+
+      // Handle audio data if present
+      let audioData = null;
+      if (formData.audioBlob instanceof Blob) {
+        const audioFileData = await new Promise<string>((resolve, reject) => {
+          const reader = new FileReader();
+          reader.readAsDataURL(formData.audioBlob);
+          reader.onload = () => resolve(reader.result as string);
+          reader.onerror = error => reject(error);
+        });
+        audioData = {
+          fileType: 'audio',
+          fileData: audioFileData
+        };
+      }
 
       await onSubmit({
         userId: user?.id || '',
         description: formData.description,
         caption: formData.caption,
         files: filesData,
+        audioFile: audioData,
         endTime: formData.endTime,
         location: formData.location,
       });
 
+      // Reset form after successful submission
       setFormData({
         description: '',
         caption: '',
@@ -90,6 +118,7 @@ export default function TimeCapsuleForm({ onSubmit }: TimeCapsuleFormProps) {
         files: [],
         location: '',
       });
+      setAudioURL(null);
     } catch (error) {
       console.error('Failed to create time capsule:', error);
     } finally {
@@ -203,6 +232,65 @@ export default function TimeCapsuleForm({ onSubmit }: TimeCapsuleFormProps) {
     }
   };
 
+  const startRecording = async () => {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      const mediaRecorder = new MediaRecorder(stream);
+      mediaRecorderRef.current = mediaRecorder;
+      audioChunksRef.current = [];
+
+      mediaRecorder.ondataavailable = (event) => {
+        if (event.data.size > 0) {
+          audioChunksRef.current.push(event.data);
+        }
+      };
+
+      mediaRecorder.onstop = () => {
+        const audioBlob = new Blob(audioChunksRef.current, { type: 'audio/wav' });
+        const audioUrl = URL.createObjectURL(audioBlob);
+        setAudioURL(audioUrl);
+        setFormData(prev => ({ ...prev, audioBlob }));
+      };
+
+      mediaRecorder.start();
+      setIsRecording(true);
+      setShowRecordingModal(true);
+    } catch (error) {
+      console.error('Error accessing microphone:', error);
+      alert('Failed to access microphone. Please ensure you have granted permission.');
+    }
+  };
+
+  const stopRecording = () => {
+    if (mediaRecorderRef.current && isRecording) {
+      mediaRecorderRef.current.stop();
+      mediaRecorderRef.current.stream.getTracks().forEach(track => track.stop());
+      setIsRecording(false);
+      setShowRecordingModal(false);
+    }
+  };
+
+  const cancelRecording = () => {
+    if (mediaRecorderRef.current && isRecording) {
+      mediaRecorderRef.current.stop();
+      mediaRecorderRef.current.stream.getTracks().forEach(track => track.stop());
+    }
+    setIsRecording(false);
+    setShowRecordingModal(false);
+    setAudioURL(null);
+    setFormData(prev => ({ ...prev, audioBlob: undefined }));
+  };
+
+  const updateDateTime = (date: string, time: string) => {
+    if (date && time) {
+      const combined = new Date(`${date}T${time}`);
+      setFormData(prev => ({
+        ...prev,
+        endTime: combined.toISOString()
+      }));
+    }
+  };
+
   return (
     <div className="space-y-4 mb-8 glass p-6 rounded-xl">
       <div className="flex justify-between items-center mb-4">
@@ -306,29 +394,55 @@ className="flex-grow bg-white/5 backdrop-blur-sm p-3 pt-12 rounded-xl text-white
             </label>
           </div>
 
-          <div className="relative inline-flex items-center">
-            <input
-              id="endTime"
-              type="datetime-local"
-              name="endTime"
-              value={formData.endTime}
-              onChange={handleInputChange}
-              className="absolute mt-2 ml-12 opacity-0  text-white"
-              style={{ 
-                top: '100%', 
-                left: 0, 
-                zIndex: 50,
-                colorScheme: 'dark'  // This helps with the native picker's theme
-              }}
-              ref={dateInputRef}
-            />
-            <button 
-              type="button"
-              onClick={() => dateInputRef.current?.showPicker()}
-              className="cursor-pointer p-3  rounded-xl"
-            >
-              <span className="material-icons text-white">event</span>
-            </button>
+          <button
+            type="button"
+            onClick={startRecording}
+            className="cursor-pointer p-3 rounded-xl hover:bg-white/5"
+            disabled={isRecording}
+          >
+            <span className="material-icons text-white">
+              {isRecording ? 'mic' : 'mic_none'}
+            </span>
+          </button>
+
+          <div className="relative inline-flex items-center gap-2">
+            <div className="flex items-center">
+              <input
+                type="date"
+                value={selectedDate}
+                onChange={(e) => {
+                  setSelectedDate(e.target.value);
+                  updateDateTime(e.target.value, selectedTime);
+                }}
+                className="absolute opacity-0 w-8"
+                style={{ 
+                  top: '100%', 
+                  left: 0, 
+                  zIndex: 50,
+                }}
+                ref={dateInputRef}
+              />
+              <button 
+                type="button"
+                onClick={() => dateInputRef.current?.showPicker()}
+                className="cursor-pointer p-3 rounded-xl hover:bg-white/5"
+              >
+                <span className="material-icons text-white">event</span>
+              </button>
+            </div>
+
+            <div className="flex items-center">
+              <input
+                type="time"
+                value={selectedTime}
+                onChange={(e) => {
+                  setSelectedTime(e.target.value);
+                  updateDateTime(selectedDate, e.target.value);
+                }}
+                className="bg-transparent text-white border border-gray-600 rounded px-2 py-1"
+              />
+            </div>
+
             {formData.endTime && (
               <span className="text-sm text-gray-400 ml-2">
                 {new Date(formData.endTime).toLocaleString()}
@@ -363,6 +477,25 @@ className="flex-grow bg-white/5 backdrop-blur-sm p-3 pt-12 rounded-xl text-white
         <p className="text-sm text-gray-400">
           *Please select at least one file
         </p>
+      )}
+
+      {audioURL && (
+        <div className="mt-4">
+          <audio controls src={audioURL} className="w-full" />
+          <button
+            onClick={cancelRecording}
+            className="mt-2 text-red-400 hover:text-red-300"
+          >
+            Remove Audio
+          </button>
+        </div>
+      )}
+
+      {showRecordingModal && (
+        <AudioRecordingModal
+          onStop={stopRecording}
+          onCancel={cancelRecording}
+        />
       )}
     </div>
   );
