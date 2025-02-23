@@ -443,7 +443,8 @@ className="flex-grow bg-white/5 backdrop-blur-sm p-3 pt-12 rounded-xl text-white
                   setSelectedTime(e.target.value);
                   updateDateTime(selectedDate, e.target.value);
                 }}
-                className="bg-transparent text-white border border-gray-600 rounded px-2 py-1"
+                className="bg-transparent text-white border border-gray-600 rounded px-2 py-1 focus:outline-none focus:border-white/50 [color-scheme:dark]"
+                style={{ colorScheme: 'dark' }}
               />
             </div>
 
