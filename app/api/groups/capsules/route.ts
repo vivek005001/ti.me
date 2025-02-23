@@ -12,8 +12,8 @@ export async function POST(req: Request) {
     }
 
     const client = await clientPromise;
-    const db = client.db();
-    const capsules = db.collection('capsules');
+    const db = client.db('timeCapsuleDB');
+    const capsules = db.collection('timeCapsules');
 
     const result = await capsules.insertOne({
       groupId,
@@ -51,8 +51,8 @@ export async function GET(req: Request) {
     }
 
     const client = await clientPromise;
-    const db = client.db();
-    const capsules = db.collection('capsules');
+    const db = client.db('timeCapsuleDB');
+    const capsules = db.collection('timeCapsules');
 
     const results = await capsules.find({ groupId }).toArray();
 

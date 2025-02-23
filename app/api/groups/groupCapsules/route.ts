@@ -2,7 +2,6 @@ import { NextResponse } from 'next/server';
 import clientPromise from '@/app/lib/mongodb';
 import { TimeCapsuleData } from '@/app/types';
 import { auth } from '@clerk/nextjs/server';
-import { ObjectId } from 'mongodb';
 
 export async function GET(request: Request) {
     try {
@@ -21,11 +20,16 @@ export async function GET(request: Request) {
       const client = await clientPromise;
       const db = client.db("timeCapsuleDB");
   
-      // Ensure groupId is treated as a string
+      // Log the groupId we're searching for
+      console.log('Searching for capsules with groupId:', groupId);
+
       const capsules = await db.collection("timeCapsules")
         .find({ groupId: groupId })
         .sort({ createdAt: -1 })
         .toArray();
+
+      console.log('Found capsules:', capsules);
+      
       return NextResponse.json({ success: true, capsules });
     } catch (error) {
       console.error('Error fetching time capsules:', error);
