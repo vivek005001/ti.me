@@ -85,7 +85,14 @@ const TimeCapsuleCard: React.FC<TimeCapsuleCardProps> = ({ capsule }) => {
   return (
     <div className="glass rounded-lg p-4 py-6 mb-2 space-y-3">
       <div className="flex justify-between items-start">
-        <h3 className="text-xl font-semibold text-white">{capsule.caption.toUpperCase()}</h3>
+        <div className="flex items-center gap-2">
+          <img 
+            src={user?.imageUrl} 
+            alt="User avatar"
+            className="w-6 h-6 rounded-md "
+          />
+          <h3 className="text-xl font-semibold text-white">{capsule.caption.toUpperCase()}</h3>
+        </div>
         <div className="flex gap-2 items-center">
           <span className="flex items-center gap-1 text-sm text-gray-400">
 
