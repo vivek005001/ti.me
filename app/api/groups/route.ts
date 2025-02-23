@@ -17,7 +17,7 @@ export async function POST(request: Request) {
     const { name, description, isPrivate } = body;
     
     const group = {
-      groupId: uuidv4(),  // Add a unique groupId using UUID
+      groupID: uuidv4(),  // Add a unique groupID using UUID
       name,
       description,
       isPrivate,
@@ -28,7 +28,7 @@ export async function POST(request: Request) {
 
     const result = await db.collection('groups').insertOne(group);
     
-    // Get the inserted document with both MongoDB _id and our groupId
+    // Get the inserted document with both MongoDB _id and our groupID
     const insertedGroup = {
       _id: result.insertedId,
       ...group

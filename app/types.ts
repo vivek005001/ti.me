@@ -9,6 +9,7 @@ export interface TimeCapsuleData {
     fileData: string;
   }[];
   userId: string;
+  groupId: string;
   location?: string;
 }
 

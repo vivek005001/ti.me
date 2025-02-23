@@ -7,7 +7,7 @@ import { useRouter } from 'next/navigation';
 
 interface Group {
   _id: string;
-  groupId: string;
+  groupID: string;
   name: string;
   description: string;
   isPrivate: boolean;
@@ -78,7 +78,7 @@ export default function GroupsPage() {
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {groups.map((group) => (
-          <GroupCard key={group.groupId || group._id} group={group} />
+          <GroupCard key={group.groupID || group._id} group={group} />
         ))}
       </div>
     </div>

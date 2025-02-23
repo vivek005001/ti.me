@@ -5,7 +5,7 @@ import ShareModal from './ShareModal';
 
 interface GroupCardProps {
   group: {
-    groupId: string;
+    groupID: string;
     name: string;
     description: string;
     isPrivate: boolean;
@@ -30,7 +30,7 @@ const GroupCard: React.FC<GroupCardProps> = ({ group }) => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          groupId: group.groupId,
+          groupID: group.groupID,
           userId: userId
         }),
       });
@@ -49,7 +49,7 @@ const GroupCard: React.FC<GroupCardProps> = ({ group }) => {
 
   const handleShareByLink = async () => {
     // Generate a shareable link using the group ID
-    const shareableLink = `${window.location.origin}/groups/join/${group.groupId}`;
+    const shareableLink = `${window.location.origin}/groups/join/${group.groupID}`;
     // Copy to clipboard
     await navigator.clipboard.writeText(shareableLink);
     return shareableLink;
@@ -57,7 +57,7 @@ const GroupCard: React.FC<GroupCardProps> = ({ group }) => {
 
   return (
     <div>
-      <Link href={`/groups/${group.groupId}`}>
+      <Link href={`/groups/${group.groupID}`}>
         <div className="bg-gray-800 rounded-lg p-4 hover:bg-gray-700 transition-colors">
           <h3 className="text-xl font-semibold mb-2">{group.name}</h3>
           <p className="text-gray-400 mb-4">{group.description}</p>

@@ -4,13 +4,13 @@ import { NextResponse } from 'next/server';
 
 export async function POST(request: Request) {
   try {
-    const { groupId, userId } = await request.json();
+    const { groupID, userId } = await request.json();
     const client = await clientPromise;
     const db = client.db("timeCapsuleDB");
 
     // Update the group document by adding the user to members array
     const result = await db.collection('groups').updateOne(
-      { _id: new ObjectId(groupId) },
+      { _id: new ObjectId(groupID) },
       { $addToSet: { members: userId } }  // $addToSet ensures no duplicates
     );
 

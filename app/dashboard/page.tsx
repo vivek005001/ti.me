@@ -39,7 +39,10 @@ const DashboardPage = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(capsuleData),
+        body: JSON.stringify({
+          ...capsuleData,
+          isPersonal: 0 // Set to 0 for capsules created from dashboard
+        }),
       });
 
       const result = await response.json();
