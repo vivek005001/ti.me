@@ -3,7 +3,8 @@ import clientPromise from '@/app/lib/mongodb';
 import { TimeCapsuleData } from '@/app/types';
 import { auth } from '@clerk/nextjs/server';
 
-export const runtime = 'edge';
+// Specify Node.js runtime
+export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
 export async function GET(request: Request) {
