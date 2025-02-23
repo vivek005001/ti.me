@@ -64,12 +64,17 @@ export async function GET() {
       .toArray())
       .map(share => new ObjectId(share.capsuleId));
 
-    // Fetch both owned and shared capsules
+    // Fetch both owned and shared capsules, but only personal ones (groupId: null)
     const capsules = await db.collection("timeCapsules")
       .find({
-        $or: [
-          { userId },
-          { _id: { $in: sharedCapsuleIds } }
+        $and: [
+          {
+            $or: [
+              { userId },
+              { _id: { $in: sharedCapsuleIds } }
+            ]
+          },
+          { groupId: null } // Only get personal capsules
         ]
       })
       .sort({ createdAt: -1 })
