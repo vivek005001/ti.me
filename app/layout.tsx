@@ -1,21 +1,20 @@
+'use client'
 import type React from "react"
-import type { Metadata } from "next"
 import "./globals.css"
 import { ClerkProvider, SignedIn } from '@clerk/nextjs'
 import Sidebar from './components/Sidebar'
 import NavBar from './components/NavBar'
-
-export const metadata: Metadata = {
-  title: "TimeCapsuleConn",
-  description: "Share your memories",
-    generator: 'v0.dev'
-}
+import { usePathname } from 'next/navigation'
+import { motion } from 'framer-motion'
+import BackgroundBlobs from './components/BackgroundBlobs'
 
 export default function RootLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
+  const pathname = usePathname();
+
   return (
     <ClerkProvider>
       <html lang="en">
@@ -27,14 +26,39 @@ export default function RootLayout({
             defer
           />
         </head>
-        <body className="bg-black text-white">
-          <NavBar />
-          <SignedIn>
-            <Sidebar />
-          </SignedIn>
-          <main className="ml-64">
+        <body className="bg-black text-white relative overflow-x-hidden">
+          <BackgroundBlobs />
+          {/* Conditionally render NavBar and Sidebar with animations */}
+          {pathname !== '/' && (
+            <motion.div
+              initial={{ y: -50 }}
+              animate={{ y: 0 }}
+              transition={{ duration: 0.5 }}
+              className="fixed top-0 left-0 right-0 z-50"
+            >
+              <NavBar />
+            </motion.div>
+          )}
+          {pathname !== '/' && (
+            <SignedIn>
+              <motion.div
+                initial={{ x: -256 }}
+                animate={{ x: 0 }}
+                transition={{ duration: 0.5 }}
+                className="fixed top-0 left-0 z-40"
+              >
+                <Sidebar />
+              </motion.div>
+            </SignedIn>
+          )}
+          <motion.main
+            initial={{ y: 100 }}
+            animate={{ y: 0 }}
+            transition={{ duration: 0.5 }}
+            className={pathname !== '/' ? "ml-64 mt-16 relative z-10" : "relative z-10"}
+          >
             {children}
-          </main>
+          </motion.main>
         </body>
       </html>
     </ClerkProvider>

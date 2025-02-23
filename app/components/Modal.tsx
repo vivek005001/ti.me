@@ -13,7 +13,10 @@ const Modal: FC<ModalProps> = ({ isOpen, onClose, children }) => {
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
       <div className="bg-gray-800 rounded-lg max-w-md w-full">
         <div className="flex justify-end p-2">
-          <button onClick={onClose} className="text-gray-400 hover:text-white">
+          <button 
+            onClick={onClose} 
+            className="text-black bg-yellow-500 hover:bg-yellow-400 px-3 py-1 rounded-lg"
+          >
             ✕
           </button>
         </div>

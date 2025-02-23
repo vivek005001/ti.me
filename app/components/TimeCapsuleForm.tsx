@@ -96,27 +96,35 @@ export default function TimeCapsuleForm({ onSubmit }: TimeCapsuleFormProps) {
   };
 
   return (
-    <div className="space-y-4 mb-8 bg-zinc-900 p-6 rounded-xl">
+    <div className="space-y-4 mb-8 glass p-6 rounded-xl">
       <div className="flex flex-row gap-4 h-48">
-        <input
-          type="text"
-          name="description"
-          placeholder="Description"
-          value={formData.description}
-          onChange={handleInputChange}
-          className="flex-grow bg-black p-3 rounded-xl text-white h-full"
-          style={{ flexBasis: '70%' }}
-        />
+        <div className="relative" style={{ flexBasis: '70%' }}>
+          <input
+            type="text"
+            name="description"
+            placeholder=" "
+            value={formData.description}
+            onChange={handleInputChange}
+            className="flex-grow bg-white/10 p-3 pt-8 rounded-xl text-white h-full w-full placeholder-gray-200 peer text-lg"
+          />
+          <label className="absolute text-gray-200 duration-300 transform -translate-y-4 scale-75 top-4 left-3 z-10 origin-[0] peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-4 text-lg">
+            Description
+          </label>
+        </div>
 
-        <input
-          type="text"
-          name="caption"
-          placeholder="Caption"
-          value={formData.caption}
-          onChange={handleInputChange}
-          className="flex-grow bg-black p-3 rounded-xl text-white h-full"
-          style={{ flexBasis: '30%' }}
-        />
+        <div className="relative" style={{ flexBasis: '30%' }}>
+          <input
+            type="text"
+            name="caption"
+            placeholder=" "
+            value={formData.caption}
+            onChange={handleInputChange}
+            className="flex-grow bg-white/10 p-3 pt-8 rounded-xl text-white h-full w-full placeholder-gray-200 peer text-lg"
+          />
+          <label className="absolute text-gray-200 duration-300 transform -translate-y-4 scale-75 top-4 left-3 z-10 origin-[0] peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-4 text-lg">
+            Caption
+          </label>
+        </div>
       </div>
       
       <div className="flex justify-between items-center">
@@ -173,18 +181,10 @@ export default function TimeCapsuleForm({ onSubmit }: TimeCapsuleFormProps) {
         </div>
 
         <button
-          onClick={handleSubmit}
-          disabled={isLoading}
-          className="bg-black text-white px-6 py-2 rounded-lg hover:bg-gray-800 flex items-center gap-2"
+          type="submit"
+          className="bg-yellow-500 hover:bg-yellow-400 text-black font-medium px-6 py-3 rounded-lg shadow-lg"
         >
-          {isLoading ? (
-            <>
-              <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-              <span>Creating...</span>
-            </>
-          ) : (
-            'Create'
-          )}
+          Create Time Capsule
         </button>
       </div>
       

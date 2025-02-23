@@ -83,20 +83,18 @@ const TimeCapsuleCard: React.FC<TimeCapsuleCardProps> = ({ capsule }) => {
   };
 
   return (
-    <div className="bg-zinc-900 rounded-lg p-4 py-6 mb-2 space-y-3">
+    <div className="glass rounded-lg p-4 py-6 mb-2 space-y-3">
       <div className="flex justify-between items-start">
         <h3 className="text-xl font-semibold text-white">{capsule.caption.toUpperCase()}</h3>
         <div className="flex gap-2 items-center">
           <span className="flex items-center gap-1 text-sm text-gray-400">
-            {/* <span className="material-icons text-sm">
-              {isUnlocked ? 'lock_open' : 'lock'}
-            </span> */}
+
            
           </span>
           {isOwner && (
             <button
               onClick={() => setIsShareModalOpen(true)}
-              className="bg-black hover:bg-gray-800 text-white px-3 py-1 rounded text-sm"
+              className="bg-yellow-500 hover:bg-yellow-400 text-black font-medium px-3 py-1 rounded text-sm"
             >
               Share
             </button>

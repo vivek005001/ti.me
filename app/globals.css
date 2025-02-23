@@ -4,32 +4,32 @@
 
 @layer base {
   :root {
-    --background: #161616;
+    --background: #0a0a0f;
     --foreground: #ffffff;
 
-    --card: #2b2b2b;
+    --card: #13131a;
     --card-foreground: #ffffff;
 
-    --popover: #191919;
+    --popover: #0d0d12;
     --popover-foreground: #ffffff;
 
     --primary: #ffffff;
-    --primary-foreground: #000000;
+    --primary-foreground: #0a0a0f;
 
-    --secondary: #3d3d3d;
+    --secondary: #1a1a23;
     --secondary-foreground: #ffffff;
 
-    --muted: #bfbfbf;
-    --muted-foreground: #bfbfbf;
+    --muted: #8a8a9a;
+    --muted-foreground: #8a8a9a;
 
-    --accent: #3d3d3d;
+    --accent: #1a1a23;
     --accent-foreground: #ffffff;
 
-    --destructive: #ff0000;
+    --destructive: #ff4444;
     --destructive-foreground: #ffffff;
 
-    --border: #3d3d3d;
-    --input: #3d3d3d;
+    --border: #1a1a23;
+    --input: #1a1a23;
     --ring: #ffffff;
 
     --radius: 0.5rem;
@@ -39,6 +39,12 @@
 @layer base {
   body {
     @apply bg-background text-foreground;
+  }
+}
+
+@layer components {
+  .glass {
+    @apply bg-white/5 backdrop-blur-md border border-white/10;
   }
 }
 
