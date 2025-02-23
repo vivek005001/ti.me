@@ -22,9 +22,16 @@ const NavBar = () => {
 
   return (
     <nav className="fixed top-0 left-0 right-0 p-4 flex justify-between items-center gap-4 glass z-50 border-b border-zinc-800">
-      <div className="flex items-center">
-        <Link href="/"> 
-        <span className="text-2xl font-bold text-white">TimeIt</span>
+      <div className="flex flex-row items-center">
+        <Link href="/" className="flex items-center gap-4"> 
+          <div className="w-16 h-16">
+            <img
+              src="/animations/kogo-unscreen.gif"
+              alt="Logo animation"
+              className="w-full h-full object-cover mix-blend-screen"
+            />
+          </div>
+          <span className="text-2xl font-bold text-white">Time It</span>
         </Link>
       </div>
       

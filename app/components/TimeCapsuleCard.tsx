@@ -90,7 +90,7 @@ const TimeCapsuleCard: React.FC<TimeCapsuleCardProps> = ({ capsule }) => {
             alt="User avatar"
             className="w-6 h-6 rounded-md "
           />
-          <h3 className="text-xl font-semibold text-white">{capsule.caption.toUpperCase()}</h3>
+          <h3 className="text-xl font-semibold text-white">{capsule.caption}</h3>
         </div>
         <div className="flex gap-2 items-center">
           <span className="flex items-center gap-1 text-sm text-gray-400">
