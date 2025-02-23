@@ -10,7 +10,7 @@ interface TimeCapsuleListProps {
 
 export default function TimeCapsuleList({ timeCapsules, isLoading }: TimeCapsuleListProps) {
   return (
-    <div className="grid grid-cols-1 gap-4">
+    <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-2 gap-4">
       {timeCapsules.map(capsule => (
         <TimeCapsuleCard key={capsule._id} capsule={capsule} />
       ))}

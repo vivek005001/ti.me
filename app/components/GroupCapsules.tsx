@@ -69,10 +69,23 @@ const UpcomingCapsules: React.FC<UpcomingCapsulesProps> = ({ groupId }) => {
         <div className="space-y-6">
           {groupCapsules.map((capsule) => (
             <div key={capsule._id} className="flex items-center gap-4">
-              <div className="w-12 h-12 bg-gray-800 rounded-lg flex items-center justify-center">
-                <span className="material-icons text-white">
-                  {capsule.files?.[0]?.fileType === 'video' ? 'videocam' : 'photo'}
-                </span>
+              <div className="w-12 h-12 rounded-lg overflow-hidden relative">
+                {capsule.files?.[0]?.fileData ? (
+                  <>
+                    <img 
+                      src={capsule.files[0].fileData}
+                      alt={capsule.caption}
+                      className="w-full h-full object-cover blur-sm"
+                    />
+                    <div className="absolute inset-0 bg-black/30" />
+                  </>
+                ) : (
+                  <div className="w-full h-full bg-gray-800 flex items-center justify-center">
+                    <span className="material-icons text-white">
+                      {capsule.files?.[0]?.fileType === 'video' ? 'videocam' : 'photo'}
+                    </span>
+                  </div>
+                )}
               </div>
               
               <div className="flex-grow">
