@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
 import TimeCapsuleForm from '@/app/components/TimeCapsuleForm';
-import UpcomingCapsules from '@/app/components/GroupCapsules';
+import UpcomingCapsules from '@/app/components/UpcomingCapsules';
 import { motion } from 'framer-motion';
 import { TimeCapsuleData } from '@/app/types';
 import TimeCapsuleList from '@/app/components/TimeCapsuleList';
@@ -44,21 +44,19 @@ const GroupDetailsPage = () => {
 
   const fetchGroupCapsules = async () => {
     try {
-      const response = await fetch(`/api/groups/capsules?groupId=${groupId}`);
-      
+      const response = await fetch(`/api/groups/${groupId}/capsules`);
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
+      const result = await response.json();
+      if (result.success) {
+        setTimeCapsules(result.capsules);
 
-      const data = await response.json();
-
-      if (data.success) {
-        setTimeCapsules(data.capsules);
       } else {
-        console.error('Failed to fetch capsules:', data.error);
+        console.error('Failed to fetch capsules:', result.error);
       }
     } catch (error) {
-      console.error('Error fetching group capsules:', error);
+      console.error('Failed to fetch time capsules:', error);
     } finally {
       setIsLoading(false);
     }
@@ -77,21 +75,10 @@ const GroupDetailsPage = () => {
         }),
       });
 
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-
-      const contentType = response.headers.get("content-type");
-      if (!contentType || !contentType.includes("application/json")) {
-        throw new TypeError("Response was not JSON");
-      }
-
       const result = await response.json();
-      
+
       if (result.success) {
         fetchGroupCapsules();
-      } else {
-        console.error('Failed to create capsule:', result.error);
       }
     } catch (error) {
       console.error('Failed to create group capsule:', error);

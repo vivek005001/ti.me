@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { TimeCapsuleData } from '@/app/types';
 import { useUser } from '@clerk/nextjs';
 import { useRouter } from 'next/navigation';
@@ -9,6 +9,8 @@ export default function CapsulePage({ params }: { params: { id: string } }) {
   const [isLoading, setIsLoading] = useState(true);
   const { user, isLoaded } = useUser();
   const router = useRouter();
+  const [isPlaying, setIsPlaying] = useState(false);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
 
   useEffect(() => {
     const fetchCapsule = async () => {
@@ -27,6 +29,26 @@ export default function CapsulePage({ params }: { params: { id: string } }) {
 
     fetchCapsule();
   }, [params.id]);
+
+  const handlePlayPause = async () => {
+    if (audioRef.current) {
+      try {
+        if (isPlaying) {
+          await audioRef.current.pause();
+        } else {
+          // Load the audio first if needed
+          if (audioRef.current.readyState === 0) {
+            await audioRef.current.load();
+          }
+          await audioRef.current.play();
+        }
+        setIsPlaying(!isPlaying);
+      } catch (error) {
+        console.error('Error playing audio:', error);
+        alert('Failed to play audio. The format might not be supported by your browser.');
+      }
+    }
+  };
 
   if (isLoading || !isLoaded) {
     return <div className="min-h-screen bg-zinc-900 text-white p-8">Loading...</div>;
@@ -57,6 +79,28 @@ export default function CapsulePage({ params }: { params: { id: string } }) {
           <span className="material-icons mr-2">arrow_back</span>
           Back
         </button>
+
+        {/* Audio Player */}
+        {isUnlocked && capsule.audioFile && (
+          <div className="mb-6">
+            <button 
+              onClick={handlePlayPause} 
+              className="flex items-center text-gray-400 hover:text-white"
+            >
+              <span className="material-icons mr-2">
+                {isPlaying ? 'pause' : 'play_arrow'}
+              </span>
+              {isPlaying ? 'Pause Audio' : 'Play Audio'}
+            </button>
+            <audio 
+              ref={audioRef} 
+              preload="metadata"
+            >
+              <source src={capsule.audioFile.fileData} type="audio/webm;codecs=opus" />
+              Your browser does not support the audio element.
+            </audio>
+          </div>
+        )}
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {/* Media Gallery */}
