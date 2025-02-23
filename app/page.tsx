@@ -77,8 +77,7 @@ const Page = () => {
         <TimeCapsuleForm onSubmit={handleSubmit} />
 
         <div className="flex gap-6 ">
-          <div className="w-[70%] bg-zinc-900 p-4 rounded-xl">
-            <h2 className="text-2xl font-bold mb-4">Your Time Capsules</h2>
+          <div className="w-[70%] rounded-xl">
             <TimeCapsuleList 
               timeCapsules={timeCapsules}
               isLoading={isLoading}

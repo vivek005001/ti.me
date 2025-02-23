@@ -83,20 +83,20 @@ const TimeCapsuleCard: React.FC<TimeCapsuleCardProps> = ({ capsule }) => {
   };
 
   return (
-    <div className="bg-gray-800 rounded-lg p-4 space-y-3">
+    <div className="bg-zinc-900 rounded-lg p-4 py-6 mb-2 space-y-3">
       <div className="flex justify-between items-start">
-        <h3 className="text-xl font-semibold text-white">{capsule.caption}</h3>
+        <h3 className="text-xl font-semibold text-white">{capsule.caption.toUpperCase()}</h3>
         <div className="flex gap-2 items-center">
           <span className="flex items-center gap-1 text-sm text-gray-400">
-            <span className="material-icons text-sm">
+            {/* <span className="material-icons text-sm">
               {isUnlocked ? 'lock_open' : 'lock'}
-            </span>
-            {formatDate(capsule.endTime)}
+            </span> */}
+           
           </span>
           {isOwner && (
             <button
               onClick={() => setIsShareModalOpen(true)}
-              className="bg-blue-600 text-white px-3 py-1 rounded text-sm"
+              className="bg-black hover:bg-gray-800 text-white px-3 py-1 rounded text-sm"
             >
               Share
             </button>
@@ -109,17 +109,17 @@ const TimeCapsuleCard: React.FC<TimeCapsuleCardProps> = ({ capsule }) => {
           className="relative cursor-pointer" 
           onClick={handleCapsuleClick}
         >
-          <div className={`relative ${!isUnlocked ? 'blur-md' : ''}`}>
+          <div className={`relative ${!isUnlocked ? 'blur-md' : ''} `}>
             {capsule.files[0].fileType === 'image' ? (
               <img 
                 src={capsule.files[0].fileData}
                 alt={capsule.caption}
-                className="w-full h-48 object-cover rounded"
+                className="w-full h-48 object-cover rounded-xl my-8"
               />
             ) : (
               <video 
                 src={capsule.files[0].fileData}
-                className="w-full h-48 object-cover rounded"
+                className="w-full h-48 object-cover rounded-xl"
                 controls={isUnlocked}
               />
             )}
@@ -139,8 +139,7 @@ const TimeCapsuleCard: React.FC<TimeCapsuleCardProps> = ({ capsule }) => {
       )}
 
       <div className="space-y-4">
-        <h3 className="text-lg font-semibold text-white">{capsule.caption}</h3>
-        <p className="text-gray-300">{capsule.description}</p>
+        {/* <p className="text-gray-300">{capsule.description}</p> */}
         
         {capsule.location && (
           <div className="flex items-center gap-2 text-gray-300">
@@ -153,9 +152,9 @@ const TimeCapsuleCard: React.FC<TimeCapsuleCardProps> = ({ capsule }) => {
           <span>{formatDate(capsule.createdAt)}</span>
           <span>{getTimeLeft()}</span>
         </div>
-        <div className="relative w-full bg-gray-700 rounded-full h-2.5">
+        <div className="relative w-full bg-black rounded-full h-2.5">
           <div 
-            className="absolute left-0 bg-blue-600 h-full rounded-full transition-all duration-500"
+            className="absolute left-0 bg-gray-600 h-full rounded-full transition-all duration-500"
             style={{ 
               width: `${calculateProgress()}%`,
               minWidth: '2px',
