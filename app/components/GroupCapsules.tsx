@@ -18,14 +18,18 @@ const UpcomingCapsules: React.FC<UpcomingCapsulesProps> = ({ groupId }) => {
 
   const fetchGroupCapsules = async () => {
     try {
-      const response = await fetch(`/api/groups/capsules?groupId=${groupId}`);
+      const response = await fetch(`/api/groups/capsules?groupId=${groupId}&upcoming=true`);
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
       const data = await response.json();
       if (data.success) {
         // Sort capsules by end time (closest unlock date first)
-        const sortedCapsules = data.capsules.sort((a: TimeCapsuleData, b: TimeCapsuleData) => 
+        const now = new Date();
+        const upcomingCapsules = data.capsules.filter((capsule: TimeCapsuleData) => 
+          new Date(capsule.endTime) > now
+        );
+        const sortedCapsules = upcomingCapsules.sort((a: TimeCapsuleData, b: TimeCapsuleData) => 
           new Date(a.endTime).getTime() - new Date(b.endTime).getTime()
         );
         setGroupCapsules(sortedCapsules);

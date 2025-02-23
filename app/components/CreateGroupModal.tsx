@@ -25,13 +25,9 @@ const CreateGroupModal: React.FC<CreateGroupModalProps> = ({ isOpen, onClose, on
         description,
         isPrivate
       });
-      
-      // Reset form
       setName('');
       setDescription('');
       setIsPrivate(false);
-      
-      // Close modal
       onClose();
     } catch (error) {
       console.error('Error creating group:', error);
@@ -42,52 +38,68 @@ const CreateGroupModal: React.FC<CreateGroupModalProps> = ({ isOpen, onClose, on
 
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
-      <div className="p-6">
-        <h2 className="text-xl font-bold mb-4">Create New Group</h2>
-        <form onSubmit={handleSubmit}>
-          <div className="mb-4">
-            <label className="block text-sm font-medium mb-2">Name</label>
+      <div className="glass rounded-xl w-full max-w-md p-6 shadow-lg">
+        <h2 className="text-2xl font-bold mb-6 text-white">
+          Create New Group
+        </h2>
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div>
+            <label className="block text-gray-300 mb-2" htmlFor="name">
+              Group Name
+            </label>
             <input
               type="text"
+              id="name"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className="w-full p-2 bg-gray-700 rounded"
+              className="w-full bg-white/10 rounded-lg border border-white/20 p-2 focus:outline-none focus:border-purple-500 text-white"
               required
             />
           </div>
-          
-          <div className="mb-4">
-            <label className="block text-sm font-medium mb-2">Description</label>
+          <div>
+            <label className="block text-gray-300 mb-2" htmlFor="description">
+              Description
+            </label>
             <textarea
+              id="description"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              className="w-full p-2 bg-gray-700 rounded h-24"
+              className="w-full bg-white/10 rounded-lg border border-white/20 p-2 focus:outline-none focus:border-purple-500 text-white min-h-[100px]"
               required
             />
           </div>
-          
-          <div className="mb-4 flex items-center">
-            <input
-              type="checkbox"
-              checked={isPrivate}
-              onChange={(e) => setIsPrivate(e.target.checked)}
-              className="mr-2"
-            />
-            <label className="text-sm">Private Group</label>
+          <div className="flex items-center gap-2">
+            <button
+              type="button"
+              role="switch"
+              aria-checked={isPrivate}
+              onClick={() => setIsPrivate(!isPrivate)}
+              className={`relative border-2 border-white/20 inline-flex h-6 w-11 items-center rounded-full transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 ${
+                isPrivate ? 'bg-purple-500' : 'bg-[#2c2c2e]'
+              }`}
+            >
+              <span
+                className={`inline-block h-4 w-4 transform rounded-full bg-white transition duration-200 ease-in-out ${
+                  isPrivate ? 'translate-x-6' : 'translate-x-1'
+                }`}
+              />
+            </button>
+            <label className="text-gray-300" onClick={() => setIsPrivate(!isPrivate)}>
+              Make group private
+            </label>
           </div>
-          
-          <div className="flex justify-end gap-2">
+          <div className="flex justify-end gap-3 mt-6">
             <button
               type="button"
               onClick={onClose}
-              className="px-4 py-2 bg-gray-600 rounded"
+              className="px-4 py-2 rounded-lg text-gray-300 hover:bg-[#2c2c2e] transition-colors"
             >
               Cancel
             </button>
             <button
               type="submit"
               disabled={isSubmitting}
-              className={`px-4 py-2 bg-blue-500 rounded ${isSubmitting ? 'opacity-50' : ''}`}
+              className="px-4 py-2 bg-purple-500 hover:bg-purple-600 rounded-lg text-white font-medium transition-colors disabled:opacity-50"
             >
               {isSubmitting ? 'Creating...' : 'Create Group'}
             </button>

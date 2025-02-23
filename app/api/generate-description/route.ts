@@ -33,7 +33,6 @@ export async function POST(req: Request) {
     const response = await result.response;
     const description = response.text();
 
-    console.log('Generated description:', description);
 
     return NextResponse.json({ description });
   } catch (error: any) {

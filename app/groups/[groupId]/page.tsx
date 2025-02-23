@@ -51,6 +51,7 @@ const GroupDetailsPage = () => {
       const result = await response.json();
       if (result.success) {
         setTimeCapsules(result.capsules);
+
       } else {
         console.error('Failed to fetch capsules:', result.error);
       }
@@ -75,6 +76,7 @@ const GroupDetailsPage = () => {
       });
 
       const result = await response.json();
+
       if (result.success) {
         fetchGroupCapsules();
       }
@@ -102,12 +104,16 @@ const GroupDetailsPage = () => {
         <div className="flex gap-6">
           {isLoading ? (
             <div className="flex justify-center items-center w-full h-full">
-              <Lottie
-                loop
-                animationData={loadingAnimation}
-                play
-                style={{ width: 150, height: 150 }}
-              />
+               <Lottie
+          loop
+          animationData={loadingAnimation}
+          play
+          style={{ 
+            width: 150, 
+            height: 150,
+            filter: 'invert(40%) sepia(45%) saturate(600%) hue-rotate(240deg) brightness(90%) contrast(85%)'
+          }}
+        />
             </div>
           ) : (
             <>

@@ -6,7 +6,6 @@ export async function POST(req: Request) {
   try {
     const { groupId, description, caption, files, endTime, userId, location } = await req.json();
     
-    console.log('Received data:', { groupId, description, caption, files, endTime, userId, location });
 
     if (!groupId) {
       return NextResponse.json({ success: false, error: 'Group ID is required' }, { status: 400 });
@@ -56,7 +55,6 @@ export async function GET(req: Request) {
     const capsules = db.collection('capsules');
 
     const results = await capsules.find({ groupId }).toArray();
-    console.log('Fetched capsules:', results); // Debug log
 
     return NextResponse.json({ 
       success: true, 

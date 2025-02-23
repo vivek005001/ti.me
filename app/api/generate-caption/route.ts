@@ -6,7 +6,6 @@ const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!);
 export async function POST(req: Request) {
   try {
     const { images } = await req.json();
-    console.log('Number of images received:', images.length);
     
     const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash-exp" });
 
@@ -26,7 +25,6 @@ export async function POST(req: Request) {
       }
     });
 
-    console.log('Sending request to Gemini...');
     const prompt = "Generate a single creative and engaging caption that describes all these images together, suitable for a time capsule memory. Keep it concise but meaningful.";
 
     // Send all images in a single request
@@ -34,7 +32,6 @@ export async function POST(req: Request) {
     const response = await result.response;
     const caption = response.text();
 
-    console.log('Generated caption:', caption);
 
     return NextResponse.json({ caption });
   } catch (error: any) {

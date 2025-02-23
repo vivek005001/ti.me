@@ -22,12 +22,10 @@ export async function GET(request: Request) {
       const db = client.db("timeCapsuleDB");
   
       // Ensure groupId is treated as a string
-      console.log(groupId);
       const capsules = await db.collection("timeCapsules")
         .find({ groupId: groupId })
         .sort({ createdAt: -1 })
         .toArray();
-      console.log(capsules);
       return NextResponse.json({ success: true, capsules });
     } catch (error) {
       console.error('Error fetching time capsules:', error);
