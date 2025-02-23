@@ -24,9 +24,9 @@ const UpcomingCapsules: React.FC<UpcomingCapsulesProps> = ({ groupId }) => {
       }
       const data = await response.json();
       if (data.success) {
-        // Sort capsules by creation date
+        // Sort capsules by end time (closest unlock date first)
         const sortedCapsules = data.capsules.sort((a: TimeCapsuleData, b: TimeCapsuleData) => 
-          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+          new Date(a.endTime).getTime() - new Date(b.endTime).getTime()
         );
         setGroupCapsules(sortedCapsules);
       }
@@ -49,7 +49,7 @@ const UpcomingCapsules: React.FC<UpcomingCapsulesProps> = ({ groupId }) => {
   if (isLoading) {
     return (
       <div className="glass rounded-xl p-6">
-        <h2 className="text-xl font-semibold mb-6">Group Capsules</h2>
+        <h2 className="text-xl font-semibold mb-6">Upcoming Group Capsules</h2>
         <div className="text-center text-gray-400">Loading...</div>
       </div>
     );
@@ -57,10 +57,10 @@ const UpcomingCapsules: React.FC<UpcomingCapsulesProps> = ({ groupId }) => {
 
   return (
     <div className="glass rounded-xl p-6">
-      <h2 className="text-xl font-semibold mb-6">Group Capsules</h2>
+      <h2 className="text-xl font-semibold mb-6">Upcoming Group Capsules</h2>
       
       {groupCapsules.length === 0 ? (
-        <div className="text-center text-gray-400">No capsules found</div>
+        <div className="text-center text-gray-400">No upcoming group capsules</div>
       ) : (
         <div className="space-y-6">
           {groupCapsules.map((capsule) => (
@@ -74,7 +74,7 @@ const UpcomingCapsules: React.FC<UpcomingCapsulesProps> = ({ groupId }) => {
               <div className="flex-grow">
                 <h3 className="font-medium text-white">{capsule.caption}</h3>
                 <p className="text-sm text-gray-400">
-                  Created: {formatDate(capsule.createdAt)}
+                  Unlocks: {formatDate(capsule.endTime)}
                   {capsule.location && `, ${capsule.location}`}
                 </p>
               </div>

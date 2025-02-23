@@ -8,7 +8,7 @@ export async function GET(
   { params }: { params: { groupId: string } }
 ) {
   try {
-    const { userId } = auth() || {};
+    const { userId } = await auth();
     if (!userId) {
       return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 });
     }
@@ -47,7 +47,7 @@ export async function GET(
 
 export async function POST(request: Request) {
   try {
-    const { userId } = auth() || {};
+    const { userId } = await auth();
     if (!userId) {
       return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 });
     }
@@ -95,7 +95,7 @@ export async function POST(request: Request) {
 
 export async function PUT(request: Request) {
   try {
-    const { userId } = auth() || {};
+    const { userId } = await auth();
     if (!userId) {
       return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 });
     }

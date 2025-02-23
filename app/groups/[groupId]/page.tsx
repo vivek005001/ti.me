@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
 import TimeCapsuleForm from '@/app/components/TimeCapsuleForm';
-import UpcomingCapsules from '@/app/components/UpcomingCapsules';
+import UpcomingCapsules from '@/app/components/GroupCapsules';
 import { motion } from 'framer-motion';
 import { TimeCapsuleData } from '@/app/types';
 import TimeCapsuleList from '@/app/components/TimeCapsuleList';

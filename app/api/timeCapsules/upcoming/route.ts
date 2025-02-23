@@ -12,13 +12,14 @@ export async function GET() {
     const client = await clientPromise;
     const db = client.db("timeCapsuleDB");
     
-    // Get capsules that haven't reached their endTime yet
+    const now = new Date().toISOString();
     const capsules = await db.collection("timeCapsules")
       .find({
         userId,
-        endTime: { $gt: new Date().toISOString() }
+        endTime: { $gt: now },  // Only get capsules that haven't ended yet
+        groupId: { $in: [null, "", undefined] }  // Only get personal capsules
       })
-      .sort({ endTime: 1 })
+      .sort({ endTime: 1 })  // Sort by end time, soonest first
       .toArray();
 
     return NextResponse.json({ 
