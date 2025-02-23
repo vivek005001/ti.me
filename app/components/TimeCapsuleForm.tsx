@@ -235,7 +235,9 @@ export default function TimeCapsuleForm({ onSubmit }: TimeCapsuleFormProps) {
   const startRecording = async () => {
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-      const mediaRecorder = new MediaRecorder(stream);
+      const mediaRecorder = new MediaRecorder(stream, {
+        mimeType: 'audio/webm;codecs=opus'  // Most widely supported format
+      });
       mediaRecorderRef.current = mediaRecorder;
       audioChunksRef.current = [];
 
@@ -246,13 +248,15 @@ export default function TimeCapsuleForm({ onSubmit }: TimeCapsuleFormProps) {
       };
 
       mediaRecorder.onstop = () => {
-        const audioBlob = new Blob(audioChunksRef.current, { type: 'audio/wav' });
+        const audioBlob = new Blob(audioChunksRef.current, { 
+          type: 'audio/webm;codecs=opus'
+        });
         const audioUrl = URL.createObjectURL(audioBlob);
         setAudioURL(audioUrl);
         setFormData(prev => ({ ...prev, audioBlob }));
       };
 
-      mediaRecorder.start();
+      mediaRecorder.start(1000);
       setIsRecording(true);
       setShowRecordingModal(true);
     } catch (error) {
@@ -481,7 +485,16 @@ className="flex-grow bg-white/5 backdrop-blur-sm p-3 pt-12 rounded-xl text-white
 
       {audioURL && (
         <div className="mt-4">
-          <audio controls src={audioURL} className="w-full" />
+          <audio 
+            controls 
+            preload="metadata"
+            className="w-full"
+          >
+            <source src={audioURL} type="audio/mp3" />
+            <source src={audioURL} type="audio/webm" />
+            <source src={audioURL} type="audio/ogg" />
+            Your browser does not support the audio element.
+          </audio>
           <button
             onClick={cancelRecording}
             className="mt-2 text-red-400 hover:text-red-300"

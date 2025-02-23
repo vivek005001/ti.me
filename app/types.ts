@@ -11,6 +11,12 @@ export interface TimeCapsuleData {
   userId: string;
   groupId: string;
   location?: string;
+  audioFile?: {
+    fileType: 'audio';
+    fileData: string;
+  };
+  isLocked?: boolean;
+  isOpened?: boolean;
 }
 
 export interface Group {
