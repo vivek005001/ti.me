@@ -105,7 +105,11 @@ const DashboardPage = () => {
                 loop
                 animationData={loadingAnimation}
                 play
-                style={{ width: 150, height: 150 }}
+                style={{ 
+                  width: 150, 
+                  height: 150,
+                  filter: 'invert(40%) sepia(45%) saturate(600%) hue-rotate(240deg) brightness(90%) contrast(85%)'
+                }}
               />
             </div>
           ) : (
