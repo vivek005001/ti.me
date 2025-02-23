@@ -8,6 +8,14 @@ import { usePathname } from 'next/navigation'
 import { motion } from 'framer-motion'
 import BackgroundBlobs from './components/BackgroundBlobs'
 import { useState } from 'react'
+import { Inter } from 'next/font/google'
+
+const inter = Inter({
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-inter',
+  weight: ['300', '400', '500', '600'],  // Including light, regular, medium, and semibold weights
+})
 
 export default function RootLayout({
   children,
@@ -19,7 +27,7 @@ export default function RootLayout({
 
   return (
     <ClerkProvider>
-      <html lang="en">
+      <html lang="en" className={`${inter.variable}`}>
         <head>
           <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
           <script
@@ -28,7 +36,7 @@ export default function RootLayout({
             defer
           />
         </head>
-        <body className="bg-black text-white relative overflow-x-hidden">
+        <body className="bg-black text-white relative overflow-x-hidden font-inter">
           <BackgroundBlobs />
           {/* Conditionally render NavBar and Sidebar with animations */}
           {pathname !== '/' && (

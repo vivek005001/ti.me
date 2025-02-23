@@ -34,8 +34,7 @@ const TimeCapsuleCard: React.FC<TimeCapsuleCardProps> = ({ capsule }) => {
     const elapsed = now - start;
     const total = end - start;
     const progress = (elapsed / total) * 100;
-    const finalProgress = Math.min(Math.max(Math.round(progress * 60), 0), 100);
-    return finalProgress;
+    return Math.min(Math.max(Math.round(progress), 0), 100);
   };
 
   const getTimeLeft = () => {
@@ -157,9 +156,9 @@ const TimeCapsuleCard: React.FC<TimeCapsuleCardProps> = ({ capsule }) => {
           <span>{formatDate(capsule.createdAt)}</span>
           <span>{getTimeLeft()}</span>
         </div>
-        <div className="relative w-full bg-black rounded-full h-2.5">
+        <div className="relative w-full bg-white/20 rounded-full h-1.5">
           <div 
-            className="absolute left-0 bg-gray-600 h-full rounded-full transition-all duration-500"
+            className="absolute left-0 bg-gradient-to-r from-purple-200 via-blue-200 to-white h-full rounded-full transition-all duration-500"
             style={{ 
               width: `${calculateProgress()}%`,
               minWidth: '2px',

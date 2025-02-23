@@ -88,17 +88,23 @@ const DashboardPage = () => {
         <div className="mb-4 flex items-center gap-2">
           <div className="overflow-hidden" style={{ marginTop: -40, marginBottom: -40 }}>
             <Lottie
-              loop
               animationData={helloAnimation}
               play
               style={{ 
                 width: 200, 
                 height: 200,
-                filter: 'brightness(0) invert(1)'
+                filter: 'brightness(0) invert(1)',
+                background: 'linear-gradient(to right, rgb(233, 213, 255), rgb(199, 213, 255), rgb(255, 255, 255))',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                backgroundClip: 'text',
+              }}
+              onComplete={() => {
+                console.log('Hello animation completed');
               }}
             />
           </div>
-          <h1 className="text-5xl font-bold">
+          <h1 className="text-5xl font-bold bg-gradient-to-r from-purple-200 via-blue-200 to-white bg-clip-text text-transparent">
             {user?.firstName?.charAt(0).toUpperCase() + user?.firstName?.slice(1).toLowerCase()}!
           </h1>
         </div>
