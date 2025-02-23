@@ -51,11 +51,11 @@ export default function CapsulePage({ params }: { params: { id: string } }) {
   };
 
   if (isLoading || !isLoaded) {
-    return <div className="min-h-screen bg-zinc-900 text-white p-8">Loading...</div>;
+    return <div className="min-h-screen bg-black text-white p-8">Loading...</div>;
   }
 
   if (!capsule) {
-    return <div className="min-h-screen bg-zinc-900 text-white p-8">Capsule not found</div>;
+    return <div className="min-h-screen bg-black text-white p-8">Capsule not found</div>;
   }
 
   const isUnlocked = new Date(capsule.endTime) <= new Date();
@@ -70,11 +70,11 @@ export default function CapsulePage({ params }: { params: { id: string } }) {
   };
 
   return (
-    <div className="min-h-screen bg-zinc-900 text-white p-8">
+    <div className="min-h-screen glass mt-28 mx-6 rounded-xl text-white p-8">
       <div className="max-w-6xl mx-auto">
         <button 
           onClick={() => router.back()} 
-          className="mb-6 flex items-center text-gray-400 hover:text-white"
+          className="mb-8 flex items-center text-gray-400 hover:text-white transition-colors"
         >
           <span className="material-icons mr-2">arrow_back</span>
           Back
@@ -82,10 +82,10 @@ export default function CapsulePage({ params }: { params: { id: string } }) {
 
         {/* Audio Player */}
         {isUnlocked && capsule.audioFile && (
-          <div className="mb-6">
+          <div className="mb-8 glass p-4 rounded-xl">
             <button 
               onClick={handlePlayPause} 
-              className="flex items-center text-gray-400 hover:text-white"
+              className="flex items-center text-gray-400 hover:text-white transition-colors"
             >
               <span className="material-icons mr-2">
                 {isPlaying ? 'pause' : 'play_arrow'}
@@ -95,6 +95,7 @@ export default function CapsulePage({ params }: { params: { id: string } }) {
             <audio 
               ref={audioRef} 
               preload="metadata"
+              className="w-full mt-4"
             >
               <source src={capsule.audioFile.fileData} type="audio/webm;codecs=opus" />
               Your browser does not support the audio element.
@@ -104,11 +105,11 @@ export default function CapsulePage({ params }: { params: { id: string } }) {
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {/* Media Gallery */}
-          <div className="space-y-4">
+          <div className="glass rounded-xl p-6 space-y-4">
             {isUnlocked ? (
               <div className="grid grid-cols-2 gap-4">
                 {capsule.files.map((file, index) => (
-                  <div key={index} className="aspect-square bg-gray-800 rounded-lg overflow-hidden">
+                  <div key={index} className="aspect-square bg-white/5 rounded-xl overflow-hidden hover:scale-105 transition-transform duration-300">
                     {file.fileType === 'image' ? (
                       <img 
                         src={file.fileData}
@@ -126,10 +127,10 @@ export default function CapsulePage({ params }: { params: { id: string } }) {
                 ))}
               </div>
             ) : (
-              <div className="aspect-square bg-gray-800 rounded-lg flex items-center justify-center">
-                <div className="text-center">
-                  <span className="material-icons text-6xl mb-4">lock</span>
-                  <p className="text-xl">This capsule is still locked</p>
+              <div className="aspect-square bg-white/5 rounded-xl flex items-center justify-center backdrop-blur-sm">
+                <div className="text-center p-8">
+                  <span className="material-icons text-6xl mb-4 text-yellow-500">lock</span>
+                  <p className="text-xl font-medium">This capsule is still locked</p>
                   <p className="text-gray-400 mt-2">Unlocks on {formatDate(capsule.endTime)}</p>
                 </div>
               </div>
@@ -137,27 +138,27 @@ export default function CapsulePage({ params }: { params: { id: string } }) {
           </div>
 
           {/* Capsule Details */}
-          <div className="space-y-6">
+          <div className="glass rounded-xl p-6 space-y-6">
             <div>
               <h1 className="text-3xl font-bold mb-4">{capsule.caption}</h1>
-              <p className="text-gray-300 text-lg">{capsule.description}</p>
+              <p className="text-gray-300 text-lg leading-relaxed">{capsule.description}</p>
             </div>
 
-            <div className="space-y-4">
-              <div className="flex items-center gap-2 text-gray-300">
-                <span className="material-icons">person</span>
+            <div className="space-y-4 mt-8">
+              <div className="flex items-center gap-3 text-gray-300">
+                <span className="material-icons text-yellow-500/80">person</span>
                 <span>{user?.fullName || 'Anonymous'}</span>
               </div>
 
               {capsule.location && (
-                <div className="flex items-center gap-2 text-gray-300">
-                  <span className="material-icons">location_on</span>
+                <div className="flex items-center gap-3 text-gray-300">
+                  <span className="material-icons text-yellow-500/80">location_on</span>
                   <span>{capsule.location}</span>
                 </div>
               )}
 
-              <div className="flex items-center gap-2 text-gray-300">
-                <span className="material-icons">schedule</span>
+              <div className="flex items-center gap-3 text-gray-300">
+                <span className="material-icons text-yellow-500/80">schedule</span>
                 <div className="space-y-1">
                   <div>Created: {formatDate(capsule.createdAt)}</div>
                   <div>Unlocks: {formatDate(capsule.endTime)}</div>

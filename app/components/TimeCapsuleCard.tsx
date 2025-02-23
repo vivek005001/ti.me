@@ -11,9 +11,23 @@ interface TimeCapsuleCardProps {
 const TimeCapsuleCard: React.FC<TimeCapsuleCardProps> = ({ capsule }) => {
   const router = useRouter();
   const [isShareModalOpen, setIsShareModalOpen] = useState(false);
+  const [creatorImageUrl, setCreatorImageUrl] = useState<string>('');
   const { user } = useUser();
   const isOwner = user?.id === capsule.userId;
   const isUnlocked = new Date(capsule.endTime) <= new Date();
+
+  React.useEffect(() => {
+    const fetchCreatorImage = async () => {
+      try {
+        const response = await fetch(`/api/users/${capsule.userId}`);
+        const data = await response.json();
+        setCreatorImageUrl(data.imageUrl);
+      } catch (error) {
+        console.error('Failed to fetch creator image:', error);
+      }
+    };
+    fetchCreatorImage();
+  }, [capsule.userId]);
 
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString('en-US', {
@@ -86,9 +100,9 @@ const TimeCapsuleCard: React.FC<TimeCapsuleCardProps> = ({ capsule }) => {
       <div className="flex justify-between items-start">
         <div className="flex items-center gap-2">
           <img 
-            src={user?.imageUrl} 
-            alt="User avatar"
-            className="w-6 h-6 rounded-md "
+            src={creatorImageUrl} 
+            alt="Creator avatar"
+            className="w-6 h-6 rounded-md"
           />
           <h3 className="text-xl font-semibold text-white">{capsule.caption}</h3>
         </div>
@@ -178,4 +192,4 @@ const TimeCapsuleCard: React.FC<TimeCapsuleCardProps> = ({ capsule }) => {
   );
 };
 
-export default TimeCapsuleCard; 
+export default TimeCapsuleCard;
