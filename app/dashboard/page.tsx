@@ -5,10 +5,15 @@ import TimeCapsuleForm from '../components/TimeCapsuleForm'
 import TimeCapsuleList from '../components/TimeCapsuleList'
 import { TimeCapsuleData } from '../types'
 import { motion } from 'framer-motion'
-import Lottie from 'react-lottie-player'
+import dynamic from 'next/dynamic'
 import loadingAnimation from '@/public/animations/loading.json' // Path to your Lottie JSON file
 import helloAnimation from '@/public/animations/hello.json' // Add this import
 import UpcomingCapsules2 from '../components/UpcomingCapsules'
+
+// Dynamically import Lottie component with ssr disabled
+const Lottie = dynamic(() => import('react-lottie-player'), {
+  ssr: false
+});
 
 const DashboardPage = () => {
   const { isLoaded, isSignedIn, user } = useUser();
