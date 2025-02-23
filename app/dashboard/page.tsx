@@ -8,7 +8,7 @@ import { motion } from 'framer-motion'
 import Lottie from 'react-lottie-player'
 import loadingAnimation from '@/public/animations/loading.json' // Path to your Lottie JSON file
 import helloAnimation from '@/public/animations/hello.json' // Add this import
-import UpcomingCapsules2 from '../components/UpcomingCapsules2'
+import UpcomingCapsules2 from '../components/UpcomingCapsules'
 
 const DashboardPage = () => {
   const { isLoaded, isSignedIn, user } = useUser();
@@ -103,7 +103,6 @@ const DashboardPage = () => {
                 backgroundClip: 'text',
               }}
               onComplete={() => {
-                console.log('Hello animation completed');
               }}
             />
           </div>
