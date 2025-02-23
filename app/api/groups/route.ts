@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
-import clientPromise from '@/app/lib/mongodb';
+import { MongoClient } from 'mongodb';
+import { v4 as uuidv4 } from 'uuid';
 import { auth } from '@clerk/nextjs/server';
-import { ObjectId } from 'mongodb';
 
 export async function POST(request: Request) {
   try {
@@ -10,38 +10,37 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    const { name, description, isPrivate } = await request.json();
+    const client = await MongoClient.connect(process.env.MONGODB_URI!);
+    const db = client.db('timecapsules');
     
-    if (!name || !description) {
-      return NextResponse.json(
-        { success: false, error: 'Missing required fields' },
-        { status: 400 }
-      );
-    }
-
-    const client = await clientPromise;
-    const db = client.db("timeCapsuleDB");
+    const body = await request.json();
+    const { name, description, isPrivate } = body;
     
     const group = {
-      _id: new ObjectId(),
+      groupId: uuidv4(),  // Add a unique groupId using UUID
       name,
       description,
+      isPrivate,
       createdBy: userId,
-      members: [userId],
+      members: [userId],  // Initialize with the creator as the first member
       createdAt: new Date().toISOString(),
-      isPrivate: isPrivate || false,
     };
 
-    await db.collection("groups").insertOne(group);
-
-    return NextResponse.json({ 
-      success: true,
-      group
-    });
+    const result = await db.collection('groups').insertOne(group);
+    
+    // Get the inserted document with both MongoDB _id and our groupId
+    const insertedGroup = {
+      _id: result.insertedId,
+      ...group
+    };
+    
+    await client.close();
+    
+    return NextResponse.json(insertedGroup, { status: 201 });
   } catch (error) {
     console.error('Error creating group:', error);
     return NextResponse.json(
-      { success: false, error: 'Failed to create group' },
+      { error: 'Failed to create group' },
       { status: 500 }
     );
   }
@@ -54,20 +53,20 @@ export async function GET() {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    const client = await clientPromise;
-    const db = client.db("timeCapsuleDB");
-
-    // Fetch groups that are either public or belong to the user
-    const groups = await db.collection("groups")
+    const client = await MongoClient.connect(process.env.MONGODB_URI!);
+    const db = client.db('timecapsules');
+    
+    const groups = await db.collection('groups')
       .find({
         $or: [
-          { isPrivate: false }, // Public groups
-          { members: userId }   // Groups the user is a member of
+          { isPrivate: false },
+          { members: userId }
         ]
       })
-      .sort({ createdAt: -1 })
       .toArray();
-
+    
+    await client.close();
+    
     return NextResponse.json({ groups });
   } catch (error) {
     console.error('Error fetching groups:', error);

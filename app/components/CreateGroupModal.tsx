@@ -1,57 +1,81 @@
+'use client';
 import { useState } from 'react';
+import Modal from './Modal';
 
 interface CreateGroupModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onCreate: (data: { name: string; description: string; isPrivate: boolean }) => Promise<void>;
+  onCreate: (groupData: { name: string; description: string; isPrivate: boolean }) => Promise<void>;
 }
 
 const CreateGroupModal: React.FC<CreateGroupModalProps> = ({ isOpen, onClose, onCreate }) => {
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const [isPrivate, setIsPrivate] = useState(false);
-
-  if (!isOpen) return null;
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    await onCreate({ name, description, isPrivate });
-    setName('');
-    setDescription('');
-    setIsPrivate(false);
+    if (isSubmitting) return;
+
+    try {
+      setIsSubmitting(true);
+      await onCreate({
+        name,
+        description,
+        isPrivate
+      });
+      
+      // Reset form
+      setName('');
+      setDescription('');
+      setIsPrivate(false);
+      
+      // Close modal
+      onClose();
+    } catch (error) {
+      console.error('Error creating group:', error);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-      <div className="bg-gray-800 p-6 rounded-lg w-96">
+    <Modal isOpen={isOpen} onClose={onClose}>
+      <div className="p-6">
         <h2 className="text-xl font-bold mb-4">Create New Group</h2>
         <form onSubmit={handleSubmit}>
-          <input
-            type="text"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            placeholder="Group Name"
-            className="w-full p-2 mb-4 bg-gray-700 rounded"
-            required
-          />
-          <textarea
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            placeholder="Group Description"
-            className="w-full p-2 mb-4 bg-gray-700 rounded h-24"
-            required
-          />
-          <div className="flex items-center mb-4">
+          <div className="mb-4">
+            <label className="block text-sm font-medium mb-2">Name</label>
+            <input
+              type="text"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              className="w-full p-2 bg-gray-700 rounded"
+              required
+            />
+          </div>
+          
+          <div className="mb-4">
+            <label className="block text-sm font-medium mb-2">Description</label>
+            <textarea
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              className="w-full p-2 bg-gray-700 rounded h-24"
+              required
+            />
+          </div>
+          
+          <div className="mb-4 flex items-center">
             <input
               type="checkbox"
               checked={isPrivate}
-              onChange={() => setIsPrivate(!isPrivate)}
+              onChange={(e) => setIsPrivate(e.target.checked)}
               className="mr-2"
             />
-            <label className="text-gray-300">
-              Set as Private Group
-            </label>
+            <label className="text-sm">Private Group</label>
           </div>
+          
           <div className="flex justify-end gap-2">
             <button
               type="button"
@@ -62,14 +86,15 @@ const CreateGroupModal: React.FC<CreateGroupModalProps> = ({ isOpen, onClose, on
             </button>
             <button
               type="submit"
-              className="px-4 py-2 bg-blue-600 rounded"
+              disabled={isSubmitting}
+              className={`px-4 py-2 bg-blue-500 rounded ${isSubmitting ? 'opacity-50' : ''}`}
             >
-              Create
+              {isSubmitting ? 'Creating...' : 'Create Group'}
             </button>
           </div>
         </form>
       </div>
-    </div>
+    </Modal>
   );
 };
 
