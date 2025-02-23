@@ -7,6 +7,7 @@ import NavBar from './components/NavBar'
 import { usePathname } from 'next/navigation'
 import { motion } from 'framer-motion'
 import BackgroundBlobs from './components/BackgroundBlobs'
+import { useState } from 'react'
 
 export default function RootLayout({
   children,
@@ -14,6 +15,7 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   const pathname = usePathname();
+  const [isSidebarExpanded, setIsSidebarExpanded] = useState(false);
 
   return (
     <ClerkProvider>
@@ -41,21 +43,18 @@ export default function RootLayout({
           )}
           {pathname !== '/' && (
             <SignedIn>
-              <motion.div
-                initial={{ x: -256 }}
-                animate={{ x: 0 }}
-                transition={{ duration: 0.5 }}
-                className="fixed top-0 left-0 z-40"
-              >
-                <Sidebar />
-              </motion.div>
+              <Sidebar onExpand={setIsSidebarExpanded} />
             </SignedIn>
           )}
           <motion.main
             initial={{ y: 100 }}
-            animate={{ y: 0 }}
-            transition={{ duration: 0.5 }}
-            className={pathname !== '/' ? "ml-64 mt-16 relative z-10" : "relative z-10"}
+            animate={{ 
+              y: 0,
+              marginLeft: pathname !== '/' ? (isSidebarExpanded ? '256px' : '72px') : '0px',
+              width: pathname !== '/' ? (isSidebarExpanded ? 'calc(100% - 256px)' : 'calc(100% - 72px)') : '100%'
+            }}
+            transition={{ duration: 0.3, ease: "easeInOut" }}
+            className="mt-16 relative z-10"
           >
             {children}
           </motion.main>

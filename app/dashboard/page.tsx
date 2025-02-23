@@ -8,6 +8,7 @@ import UpcomingCapsules from '../components/UpcomingCapsules'
 import { motion } from 'framer-motion'
 import Lottie from 'react-lottie-player'
 import loadingAnimation from '@/public/animations/loading.json' // Path to your Lottie JSON file
+import helloAnimation from '@/public/animations/hello.json' // Add this import
 
 const DashboardPage = () => {
   const { isLoaded, isSignedIn, user } = useUser();
@@ -69,11 +70,23 @@ const DashboardPage = () => {
   }
 
   return (
-    <div className="min-h-screen text-white p-4 mt-16 rounded-xl">
+    <div className="min-h-screen text-white  rounded-xl">
       <div className="mx-auto p-4">
-        <div className="mb-8">
+        <div className="mb-4 flex items-center gap-2">
+          <div className="overflow-hidden" style={{ marginTop: -40, marginBottom: -40 }}>
+            <Lottie
+              loop
+              animationData={helloAnimation}
+              play
+              style={{ 
+                width: 200, 
+                height: 200,
+                filter: 'brightness(0) invert(1)'
+              }}
+            />
+          </div>
           <h1 className="text-5xl font-bold">
-            Welcome {user?.firstName?.charAt(0).toUpperCase() + user?.firstName?.slice(1).toLowerCase()}!
+            {user?.firstName?.charAt(0).toUpperCase() + user?.firstName?.slice(1).toLowerCase()}!
           </h1>
         </div>
         
