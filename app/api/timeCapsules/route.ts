@@ -14,7 +14,8 @@ export async function POST(request: Request) {
     const client = await clientPromise;
     const db = client.db("timeCapsuleDB");
     
-    const data: TimeCapsuleData = await request.json();
+    const data = await request.json();
+    console.log('Received capsule data:', data); // Debug log
     
     // Add validation if needed
     if (!data.description || !data.caption || !data.endTime) {
@@ -24,15 +25,18 @@ export async function POST(request: Request) {
       );
     }
 
-    // Add userId to the document
     const capsuleWithUser = {
       ...data,
       userId,
+      groupId: null, // Explicitly set groupId to null for personal capsules
       _id: new ObjectId(),
       createdAt: new Date().toISOString()
     };
 
+    console.log('Saving capsule:', capsuleWithUser); // Debug log
+
     const result = await db.collection("timeCapsules").insertOne(capsuleWithUser);
+    console.log('Insert result:', result); // Debug log
     
     return NextResponse.json({ 
       success: true, 

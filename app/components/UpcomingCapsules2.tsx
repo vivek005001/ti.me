@@ -6,19 +6,17 @@ interface UpcomingCapsulesProps {
   groupId: string;
 }
 
-const UpcomingCapsules: React.FC<UpcomingCapsulesProps> = ({ groupId }) => {
+const UpcomingCapsules2: React.FC<UpcomingCapsulesProps> = ({ groupId }) => {
   const [groupCapsules, setGroupCapsules] = useState<TimeCapsuleData[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    if (groupId) {
-      fetchGroupCapsules();
-    }
-  }, [groupId]);
+    fetchGroupCapsules();
+  }, []);
 
   const fetchGroupCapsules = async () => {
     try {
-      const response = await fetch(`/api/groups/capsules?groupId=${groupId}`);
+      const response = await fetch('/api/timeCapsules/upcoming');
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
@@ -49,7 +47,7 @@ const UpcomingCapsules: React.FC<UpcomingCapsulesProps> = ({ groupId }) => {
   if (isLoading) {
     return (
       <div className="glass rounded-xl p-6">
-        <h2 className="text-xl font-semibold mb-6">Group Capsules</h2>
+        <h2 className="text-xl font-semibold mb-6">Upcoming Capsules</h2>
         <div className="text-center text-gray-400">Loading...</div>
       </div>
     );
@@ -57,7 +55,7 @@ const UpcomingCapsules: React.FC<UpcomingCapsulesProps> = ({ groupId }) => {
 
   return (
     <div className="glass rounded-xl p-6">
-      <h2 className="text-xl font-semibold mb-6">Group Capsules</h2>
+      <h2 className="text-xl font-semibold mb-6">Upcoming Capsules</h2>
       
       {groupCapsules.length === 0 ? (
         <div className="text-center text-gray-400">No capsules found</div>
@@ -86,4 +84,4 @@ const UpcomingCapsules: React.FC<UpcomingCapsulesProps> = ({ groupId }) => {
   );
 };
 
-export default UpcomingCapsules; 
+export default UpcomingCapsules2; 

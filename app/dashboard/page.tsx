@@ -4,11 +4,11 @@ import { useUser, SignIn } from '@clerk/nextjs'
 import TimeCapsuleForm from '../components/TimeCapsuleForm'
 import TimeCapsuleList from '../components/TimeCapsuleList'
 import { TimeCapsuleData } from '../types'
-import UpcomingCapsules from '../components/UpcomingCapsules'
 import { motion } from 'framer-motion'
 import Lottie from 'react-lottie-player'
 import loadingAnimation from '@/public/animations/loading.json' // Path to your Lottie JSON file
 import helloAnimation from '@/public/animations/hello.json' // Add this import
+import UpcomingCapsules2 from '../components/UpcomingCapsules2'
 
 const DashboardPage = () => {
   const { isLoaded, isSignedIn, user } = useUser();
@@ -153,7 +153,9 @@ const DashboardPage = () => {
                 transition={{ duration: 0.5, delay: 0.2 }}
                 className="w-[30%]"
               >
-                <UpcomingCapsules />
+                <UpcomingCapsules2
+                groupId={''}
+                />
               </motion.div>
             </>
           )}

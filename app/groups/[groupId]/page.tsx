@@ -44,18 +44,22 @@ const GroupDetailsPage = () => {
 
   const fetchGroupCapsules = async () => {
     try {
-      const response = await fetch(`/api/groups/groupCapsules?groupId=${groupId}`);
+      const response = await fetch(`/api/groups/capsules?groupId=${groupId}`);
+      
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
-      const result = await response.json();
-      if (result.success) {
-        setTimeCapsules(result.capsules);
+
+      const data = await response.json();
+      console.log('Fetched capsules data:', data); // Debug log
+
+      if (data.success) {
+        setTimeCapsules(data.capsules);
       } else {
-        console.error('Failed to fetch capsules:', result.error);
+        console.error('Failed to fetch capsules:', data.error);
       }
     } catch (error) {
-      console.error('Failed to fetch time capsules:', error);
+      console.error('Error fetching group capsules:', error);
     } finally {
       setIsLoading(false);
     }
@@ -63,6 +67,7 @@ const GroupDetailsPage = () => {
 
   const handleSubmit = async (capsuleData: any) => {
     try {
+      console.log('Submitting capsule with data:', { ...capsuleData, groupId });
       const response = await fetch('/api/groups/capsules', {
         method: 'POST',
         headers: {
@@ -74,9 +79,22 @@ const GroupDetailsPage = () => {
         }),
       });
 
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const contentType = response.headers.get("content-type");
+      if (!contentType || !contentType.includes("application/json")) {
+        throw new TypeError("Response was not JSON");
+      }
+
       const result = await response.json();
+      console.log('Response from server:', result);
+      
       if (result.success) {
         fetchGroupCapsules();
+      } else {
+        console.error('Failed to create capsule:', result.error);
       }
     } catch (error) {
       console.error('Failed to create group capsule:', error);
