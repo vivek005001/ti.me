@@ -34,7 +34,7 @@ TimeCapsuleConn is a cutting-edge web application that allows users to create an
 
 1. **Clone the repository**:
    ```bash
-   git clone https://github.com/yourusername/TimeCapsuleConn.git
+   git clone https://github.com/vivek005001/TimeIt.git
    cd TimeCapsuleConn
    ```
 
@@ -48,8 +48,13 @@ TimeCapsuleConn is a cutting-edge web application that allows users to create an
    ```plaintext
    MONGODB_URI=your_mongodb_uri
    NEXT_PUBLIC_GOOGLE_MAPS_API_KEY=your_google_maps_api_key
-   CLERK_FRONTEND_API=your_clerk_frontend_api
-   CLERK_API_KEY=your_clerk_api_key
+   CLERK_SECRET_KEY=your_clerk_frontend_api
+   NEXT_PUBLIC_CLERK_SIGN_IN_URL=/sign-in
+   NEXT_PUBLIC_CLERK_SIGN_UP_URL=/sign-up
+   NEXT_PUBLIC_CLERK_AFTER_SIGN_IN_URL=/
+   NEXT_PUBLIC_CLERK_AFTER_SIGN_UP_URL=/
+   GEMINI_API_KEY=your_gemini_api_key
+   
    ```
 
 4. **Run the development server**:
@@ -64,18 +69,13 @@ TimeCapsuleConn is a cutting-edge web application that allows users to create an
 
 Contributions are welcome! Please fork the repository and submit a pull request for any improvements or bug fixes.
 
-## 📄 License
 
-This project is licensed under the MIT License.
 
 ## 📞 Contact
 
-For any inquiries or support, please contact [your-email@example.com](mailto:your-email@example.com).
+For any inquiries or support, please contact [vivekaggarwal569@example.com](mailto:vivekaggarwal569@example.com).
 
 ---
 
 Enjoy creating and sharing your digital time capsules with TimeCapsuleConn! 🎉
 
-## Environment Variables
-
-Create a `.env` file in the root directory with the following variables:
