@@ -43,7 +43,7 @@ Check out our Video design on Canva:
 1. **Clone the repository**:
    ```bash
    git clone https://github.com/vivek005001/TimeIt.git
-   cd TimeCapsuleConn
+   cd TimeIt
    ```
 
 2. **Install dependencies**:
