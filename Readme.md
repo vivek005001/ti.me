@@ -1,6 +1,6 @@
-# TimeCapsuleConn
+# TimeIt
 
-TimeCapsuleConn is a cutting-edge web application that allows users to create and share digital time capsules. Store your cherished memories, photos, and videos, and set them to unlock at specific future dates. It's a unique platform for preserving and sharing moments with friends, family, or the world.
+TimeIt is a cutting-edge web application that allows users to create and share digital time capsules. Store your cherished memories, photos, and videos, and set them to unlock at specific future dates. It's a unique platform for preserving and sharing moments with friends, family, or the world.
 
 ## 🚀 Features
 
@@ -21,7 +21,7 @@ TimeCapsuleConn is a cutting-edge web application that allows users to create an
 - **Styling**: Tailwind CSS
 - **UI Components**: Radix UI
 - **Maps Integration**: Google Maps Places API
-- **File Handling**: Local storage (configurable for S3 in production)
+
 
 ## 📋 Prerequisites
 
