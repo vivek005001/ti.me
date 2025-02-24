@@ -4,7 +4,7 @@ TimeIt is a cutting-edge web application that allows users to create and share d
 
 
 Check out our Video design on Canva:
-[TimeIt Design System](https://www.canva.com/design/DAGf951_oRA/eJCC9ci2nloYFE4_S1Xzsg/edit?utm_content=DAGf951_oRA&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton)
+[TimeIt Video](https://www.canva.com/design/DAGf951_oRA/eJCC9ci2nloYFE4_S1Xzsg/edit?utm_content=DAGf951_oRA&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton)
 
 
 
