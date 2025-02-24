@@ -2,6 +2,22 @@
 
 TimeIt is a cutting-edge web application that allows users to create and share digital time capsules. Store your cherished memories, photos, and videos, and set them to unlock at specific future dates. It's a unique platform for preserving and sharing moments with friends, family, or the world.
 
+
+## 🎨 Design
+
+Check out our UI/UX design on Canva:
+[TimeIt Design System](https://www.canva.com/design/DAGf951_oRA/eJCC9ci2nloYFE4_S1Xzsg/edit?utm_content=DAGf951_oRA&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton)
+
+You can also view our design preview below:
+
+<p align="center">
+  <a href="https://www.canva.com/design/DAGf951_oRA/eJCC9ci2nloYFE4_S1Xzsg/edit?utm_content=DAGf951_oRA&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton">
+    <img src="public/design-preview.png" alt="TimeIt Design Preview" width="600"/>
+  </a>
+</p>
+
+
+
 ## 🚀 Features
 
 - **Digital Time Capsules**: Create time capsules with photos, videos, and descriptions.
