@@ -79,11 +79,5 @@ Contributions are welcome! Please fork the repository and submit a pull request 
 
 
 
-## 📞 Contact
-
-For any inquiries or support, please contact [vivekaggarwal569@example.com](mailto:vivekaggarwal569@example.com).
-
----
-
 Enjoy creating and sharing your digital time capsules with TimeCapsuleConn! 🎉
 
